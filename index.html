@@ -4,1489 +4,370 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PoE2 0.5 — Campaign Speed Guide</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Syne+Mono&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #080b0f;
-  --surface: #0e1218;
-  --surface2: #141820;
-  --surface3: #1a2030;
-  --border: rgba(255,255,255,0.06);
-  --border-bright: rgba(255,255,255,0.12);
-  --gold: #d4a847;
-  --gold-dim: #7a5e20;
-  --gold-glow: rgba(212,168,71,0.15);
-  --amber: #e8923a;
-  --red: #d44040;
-  --red-dim: rgba(212,64,64,0.15);
-  --blue: #4a9eff;
-  --blue-dim: rgba(74,158,255,0.12);
-  --green: #3dba6e;
-  --green-dim: rgba(61,186,110,0.12);
-  --purple: #9b6fd4;
-  --purple-dim: rgba(155,111,212,0.12);
-  --text: #c8c4bc;
-  --text-dim: #6e6a62;
-  --text-muted: #4a4640;
-  --check-active: var(--gold);
-  --radius: 6px;
-  --mono: 'Syne Mono', monospace;
-  --sans: 'Syne', sans-serif;
-  --serif: 'Crimson Pro', Georgia, serif;
-}
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-html { scroll-behavior: smooth; }
-
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--serif);
-  font-size: 16px;
-  line-height: 1.75;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
-
-/* grain overlay */
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 9999;
-  opacity: 0.4;
-}
-
-/* layout */
-.layout {
-  display: grid;
-  grid-template-columns: 240px 1fr;
-  min-height: 100vh;
-}
-
-/* ── SIDEBAR ── */
-.sidebar {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  overflow-y: auto;
-  background: var(--surface);
-  border-right: 1px solid var(--border);
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  z-index: 100;
-}
-
-.sidebar-logo {
-  padding: 24px 20px 20px;
-  border-bottom: 1px solid var(--border);
-}
-
-.sidebar-logo .game-title {
-  font-family: var(--sans);
-  font-weight: 800;
-  font-size: 0.95rem;
-  color: var(--gold);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  line-height: 1.2;
-}
-.sidebar-logo .patch {
-  font-family: var(--mono);
-  font-size: 0.68rem;
-  color: var(--text-dim);
-  margin-top: 3px;
-  letter-spacing: 0.08em;
-}
-
-.progress-wrap {
-  padding: 16px 20px;
-  border-bottom: 1px solid var(--border);
-}
-.progress-label {
-  font-family: var(--sans);
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text-dim);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-}
-.progress-label span { color: var(--gold); font-family: var(--mono); }
-.progress-bar-track {
-  height: 3px;
-  background: var(--surface3);
-  border-radius: 99px;
-  overflow: hidden;
-}
-.progress-bar-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--gold-dim), var(--gold));
-  border-radius: 99px;
-  transition: width 0.4s ease;
-  width: 0%;
-}
-
-.nav-section {
-  padding: 12px 0;
-  border-bottom: 1px solid var(--border);
-}
-.nav-section-label {
-  font-family: var(--sans);
-  font-size: 0.62rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  padding: 6px 20px 4px;
-}
-.nav-link {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 7px 20px;
-  font-family: var(--sans);
-  font-size: 0.78rem;
-  font-weight: 600;
-  color: var(--text-dim);
-  text-decoration: none;
-  transition: color 0.15s, background 0.15s;
-  cursor: pointer;
-  border: none;
-  background: none;
-  width: 100%;
-  text-align: left;
-}
-.nav-link:hover { color: var(--text); background: rgba(255,255,255,0.03); }
-.nav-link.active { color: var(--gold); background: var(--gold-glow); }
-.nav-link .nav-dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--text-muted);
-  flex-shrink: 0;
-  transition: background 0.15s;
-}
-.nav-link.active .nav-dot { background: var(--gold); box-shadow: 0 0 6px var(--gold); }
-.nav-link .nav-check {
-  margin-left: auto;
-  font-family: var(--mono);
-  font-size: 0.62rem;
-  color: var(--text-muted);
-}
-.nav-link.completed .nav-dot { background: var(--green); }
-.nav-link.completed { color: var(--text-dim); }
-
-.sidebar-footer {
-  margin-top: auto;
-  padding: 16px 20px;
-  border-top: 1px solid var(--border);
-}
-.reset-btn {
-  width: 100%;
-  padding: 8px;
-  background: transparent;
-  border: 1px solid var(--border-bright);
-  border-radius: var(--radius);
-  color: var(--text-dim);
-  font-family: var(--sans);
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all 0.15s;
-}
-.reset-btn:hover { border-color: var(--red); color: var(--red); }
-
-/* ── MAIN CONTENT ── */
-main {
-  padding: 0;
-  overflow: hidden;
-}
-
-/* ── HERO ── */
-.hero {
-  padding: 64px 48px 48px;
-  border-bottom: 1px solid var(--border);
-  background: linear-gradient(135deg, var(--surface) 0%, var(--bg) 100%);
-  position: relative;
-  overflow: hidden;
-}
-.hero::before {
-  content: 'PoE2';
-  position: absolute;
-  right: -20px;
-  top: -20px;
-  font-family: var(--sans);
-  font-weight: 800;
-  font-size: 12rem;
-  color: rgba(255,255,255,0.015);
-  line-height: 1;
-  pointer-events: none;
-  user-select: none;
-}
-.hero-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-family: var(--mono);
-  font-size: 0.7rem;
-  color: var(--blue);
-  border: 1px solid rgba(74,158,255,0.25);
-  background: var(--blue-dim);
-  padding: 4px 10px;
-  border-radius: 99px;
-  margin-bottom: 20px;
-  letter-spacing: 0.06em;
-}
-.hero-badge::before { content: '●'; font-size: 0.5rem; animation: pulse 2s ease-in-out infinite; }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
-
-.hero h1 {
-  font-family: var(--sans);
-  font-weight: 800;
-  font-size: clamp(2rem, 5vw, 3.2rem);
-  color: #fff;
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  margin-bottom: 12px;
-}
-.hero h1 em {
-  color: var(--gold);
-  font-style: normal;
-}
-.hero-sub {
-  font-size: 1.05rem;
-  color: var(--text-dim);
-  max-width: 520px;
-  margin-bottom: 28px;
-}
-.hero-stats {
-  display: flex;
-  gap: 0;
-  flex-wrap: wrap;
-}
-.hero-stat {
-  padding: 10px 20px;
-  border: 1px solid var(--border);
-  border-right: none;
-  background: var(--surface);
-}
-.hero-stat:first-child { border-radius: var(--radius) 0 0 var(--radius); }
-.hero-stat:last-child { border-right: 1px solid var(--border); border-radius: 0 var(--radius) var(--radius) 0; }
-.stat-label { font-family: var(--sans); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); }
-.stat-value { font-family: var(--mono); font-size: 0.9rem; color: var(--gold); margin-top: 2px; }
-
-/* ── CONTENT SECTIONS ── */
-.content-section {
-  padding: 48px 48px 32px;
-  border-bottom: 1px solid var(--border);
-  scroll-margin-top: 0;
-}
-
-.section-eyebrow {
-  font-family: var(--mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.section-eyebrow::after { content: ''; flex: 1; height: 1px; background: var(--border); max-width: 80px; }
-
-.section-title {
-  font-family: var(--sans);
-  font-weight: 800;
-  font-size: 1.5rem;
-  color: #fff;
-  letter-spacing: -0.01em;
-  margin-bottom: 6px;
-}
-
-.section-subtitle {
-  font-size: 0.95rem;
-  color: var(--text-dim);
-  margin-bottom: 28px;
-  font-style: italic;
-}
-
-/* ── TIPS GRID ── */
-.tips-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 12px;
-  margin-bottom: 24px;
-}
-.tip-card {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 18px;
-  transition: border-color 0.15s;
-}
-.tip-card:hover { border-color: var(--border-bright); }
-.tip-icon { font-size: 1.3rem; margin-bottom: 10px; }
-.tip-name {
-  font-family: var(--sans);
-  font-weight: 700;
-  font-size: 0.82rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--text);
-  margin-bottom: 6px;
-}
-.tip-body { font-size: 0.88rem; color: var(--text-dim); line-height: 1.6; }
-
-/* ── CALLOUT ── */
-.callout {
-  border-radius: var(--radius);
-  padding: 14px 18px;
-  margin: 20px 0;
-  font-size: 0.92rem;
-  display: flex;
-  gap: 14px;
-  align-items: flex-start;
-}
-.callout-icon { font-size: 1rem; margin-top: 2px; flex-shrink: 0; }
-.callout-content {}
-.callout-label {
-  font-family: var(--sans);
-  font-weight: 700;
-  font-size: 0.72rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  margin-bottom: 4px;
-}
-.callout.tip { background: rgba(212,168,71,0.08); border: 1px solid rgba(212,168,71,0.2); }
-.callout.tip .callout-label { color: var(--gold); }
-.callout.warn { background: rgba(232,146,58,0.08); border: 1px solid rgba(232,146,58,0.2); }
-.callout.warn .callout-label { color: var(--amber); }
-.callout.info { background: var(--blue-dim); border: 1px solid rgba(74,158,255,0.2); }
-.callout.info .callout-label { color: var(--blue); }
-.callout.loot { background: var(--purple-dim); border: 1px solid rgba(155,111,212,0.25); }
-.callout.loot .callout-label { color: var(--purple); }
-
-/* ── ACT HEADER ── */
-.act-header {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 24px;
-}
-.act-num {
-  font-family: var(--sans);
-  font-weight: 800;
-  font-size: 2.5rem;
-  color: var(--gold);
-  opacity: 0.3;
-  line-height: 1;
-  flex-shrink: 0;
-  min-width: 48px;
-  text-align: right;
-}
-.act-info {}
-.act-label {
-  font-family: var(--mono);
-  font-size: 0.65rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-.act-name {
-  font-family: var(--sans);
-  font-weight: 800;
-  font-size: 1.4rem;
-  color: #fff;
-  letter-spacing: -0.01em;
-  line-height: 1.2;
-}
-.act-desc { font-size: 0.88rem; color: var(--text-dim); font-style: italic; margin-top: 2px; }
-
-/* ── ZONE ITEMS ── */
-.zone-list { display: flex; flex-direction: column; gap: 6px; }
-
-.zone-item {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
-  transition: border-color 0.15s;
-}
-.zone-item:hover { border-color: var(--border-bright); }
-.zone-item.checked { opacity: 0.6; }
-.zone-item.checked .zone-name { text-decoration: line-through; text-decoration-color: var(--text-muted); }
-
-.zone-top {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 13px 16px;
-  cursor: pointer;
-  user-select: none;
-}
-
-/* custom checkbox */
-.zone-checkbox {
-  appearance: none;
-  width: 18px; height: 18px;
-  border: 1.5px solid var(--border-bright);
-  border-radius: 4px;
-  background: transparent;
-  cursor: pointer;
-  flex-shrink: 0;
-  position: relative;
-  transition: all 0.15s;
-}
-.zone-checkbox:checked {
-  background: var(--gold);
-  border-color: var(--gold);
-}
-.zone-checkbox:checked::after {
-  content: '';
-  position: absolute;
-  left: 4px; top: 1px;
-  width: 5px; height: 9px;
-  border: 2px solid #000;
-  border-top: none;
-  border-left: none;
-  transform: rotate(45deg);
-}
-.zone-checkbox:hover { border-color: var(--gold); }
-
-.zone-name {
-  font-family: var(--sans);
-  font-weight: 600;
-  font-size: 0.84rem;
-  color: var(--text);
-  flex: 1;
-  letter-spacing: 0.01em;
-}
-
-.zone-tags { display: flex; gap: 5px; flex-wrap: wrap; }
-.tag {
-  font-family: var(--mono);
-  font-size: 0.6rem;
-  letter-spacing: 0.05em;
-  padding: 2px 7px;
-  border-radius: 99px;
-  white-space: nowrap;
-}
-.tag.req { background: var(--red-dim); color: #e07070; border: 1px solid rgba(212,64,64,0.25); }
-.tag.opt { background: var(--blue-dim); color: #7ab8ff; border: 1px solid rgba(74,158,255,0.2); }
-.tag.loot { background: var(--purple-dim); color: #c49de8; border: 1px solid rgba(155,111,212,0.2); }
-.tag.wp { background: var(--green-dim); color: #7adaa0; border: 1px solid rgba(61,186,110,0.2); }
-.tag.skip { background: rgba(255,255,255,0.04); color: var(--text-muted); border: 1px solid var(--border); }
-.tag.boss { background: rgba(212,168,71,0.1); color: var(--gold); border: 1px solid rgba(212,168,71,0.2); }
-
-.zone-expand-btn {
-  background: none;
-  border: none;
-  color: var(--text-muted);
-  cursor: pointer;
-  padding: 2px 4px;
-  font-size: 0.75rem;
-  transition: color 0.15s, transform 0.2s;
-  flex-shrink: 0;
-}
-.zone-expand-btn:hover { color: var(--text); }
-.zone-item.expanded .zone-expand-btn { transform: rotate(90deg); }
-
-.zone-body {
-  display: none;
-  padding: 0 16px 14px 46px;
-  border-top: 1px solid var(--border);
-}
-.zone-item.expanded .zone-body { display: block; }
-
-.zone-body p { font-size: 0.9rem; color: var(--text-dim); margin-top: 10px; }
-.zone-body ul { margin-top: 10px; list-style: none; display: flex; flex-direction: column; gap: 5px; }
-.zone-body li {
-  font-size: 0.88rem;
-  color: var(--text-dim);
-  padding-left: 16px;
-  position: relative;
-  line-height: 1.55;
-}
-.zone-body li::before { content: '›'; position: absolute; left: 0; color: var(--gold-dim); }
-.zone-body li strong { color: var(--text); font-weight: 600; }
-.zone-body li em { color: var(--gold); font-style: normal; }
-.zone-body li.highlight { color: var(--gold); }
-.zone-body li.highlight::before { color: var(--gold); }
-
-/* ── BOSS CARD ── */
-.boss-card {
-  background: linear-gradient(135deg, rgba(212,64,64,0.08) 0%, var(--surface3) 100%);
-  border: 1px solid rgba(212,64,64,0.2);
-  border-left: 3px solid var(--red);
-  border-radius: var(--radius);
-  padding: 14px 16px;
-  margin-top: 12px;
-}
-.boss-title {
-  font-family: var(--sans);
-  font-weight: 700;
-  font-size: 0.82rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: #e07070;
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.boss-title::before { content: '⚔'; font-size: 0.9rem; }
-.boss-tip { font-size: 0.88rem; color: var(--text-dim); line-height: 1.6; }
-.boss-tip strong { color: var(--text); }
-
-/* ── REWARD TABLE ── */
-.reward-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 8px;
-}
-.reward-table th {
-  font-family: var(--sans);
-  font-weight: 700;
-  font-size: 0.68rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  text-align: left;
-  padding: 8px 12px;
-  border-bottom: 1px solid var(--border);
-}
-.reward-table td {
-  padding: 10px 12px;
-  font-size: 0.88rem;
-  border-bottom: 1px solid var(--border);
-  vertical-align: top;
-}
-.reward-table tr:last-child td { border-bottom: none; }
-.reward-table tr:hover td { background: rgba(255,255,255,0.02); }
-
-.reward-source { color: var(--text-dim); font-style: italic; }
-.reward-item { color: var(--purple); font-weight: 500; }
-.reward-item.g { color: var(--gold); }
-.reward-item.b { color: var(--blue); }
-.reward-item.gr { color: var(--green); }
-
-.reward-row-check {
-  appearance: none;
-  width: 16px; height: 16px;
-  border: 1.5px solid var(--border-bright);
-  border-radius: 3px;
-  background: transparent;
-  cursor: pointer;
-  position: relative;
-  transition: all 0.15s;
-  flex-shrink: 0;
-  display: inline-block;
-  vertical-align: middle;
-  margin-right: 6px;
-}
-.reward-row-check:checked { background: var(--gold); border-color: var(--gold); }
-.reward-row-check:checked::after {
-  content: '';
-  position: absolute;
-  left: 3px; top: 0px;
-  width: 5px; height: 8px;
-  border: 2px solid #000;
-  border-top: none;
-  border-left: none;
-  transform: rotate(45deg);
-}
-
-/* ── ACT 4 ROUTE ── */
-.route-flow {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  position: relative;
-  margin: 20px 0;
-}
-.route-flow::before {
-  content: '';
-  position: absolute;
-  left: 20px;
-  top: 24px;
-  bottom: 24px;
-  width: 1px;
-  background: linear-gradient(to bottom, var(--gold-dim), transparent);
-}
-
-.route-stop {
-  display: flex;
-  gap: 16px;
-  align-items: flex-start;
-  padding: 12px 0;
-  position: relative;
-}
-.route-num {
-  width: 40px; height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--mono);
-  font-size: 0.78rem;
-  font-weight: 700;
-  flex-shrink: 0;
-  z-index: 1;
-  border: 2px solid;
-}
-.route-num.main { border-color: var(--gold); color: var(--gold); background: rgba(212,168,71,0.1); }
-.route-num.side { border-color: var(--blue); color: var(--blue); background: var(--blue-dim); }
-.route-num.skip { border-color: var(--text-muted); color: var(--text-muted); background: var(--surface2); }
-
-.route-content { flex: 1; padding-top: 8px; }
-.route-name {
-  font-family: var(--sans);
-  font-weight: 700;
-  font-size: 0.9rem;
-  color: var(--text);
-  margin-bottom: 2px;
-}
-.route-name.main { color: var(--gold); }
-.route-desc { font-size: 0.84rem; color: var(--text-dim); }
-.route-rewards {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  margin-top: 6px;
-}
-.route-reward-pill {
-  font-family: var(--mono);
-  font-size: 0.62rem;
-  padding: 2px 8px;
-  border-radius: 99px;
-  border: 1px solid;
-}
-.route-reward-pill.perm { color: var(--gold); border-color: var(--gold-dim); background: rgba(212,168,71,0.08); }
-.route-reward-pill.gem { color: var(--blue); border-color: rgba(74,158,255,0.3); background: var(--blue-dim); }
-.route-reward-pill.curr { color: var(--green); border-color: rgba(61,186,110,0.3); background: var(--green-dim); }
-.route-reward-pill.skip-pill { color: var(--text-muted); border-color: var(--border); background: transparent; }
-
+  --bg:#07090d;--surface:#0d1117;--surface2:#131922;--surface3:#1a2333;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);
+  --gold:#d4a847;--golddim:#7a5e20;--goldglow:rgba(212,168,71,0.12);
+  --amber:#e8923a;--red:#d44040;--reddim:rgba(212,64,64,0.12);
+  --blue:#4a9eff;--bluedim:rgba(74,158,255,0.1);
+  --green:#3dba6e;--greendim:rgba(61,186,110,0.1);
+  --purple:#9b6fd4;--purpledim:rgba(155,111,212,0.1);
+  --text:#c2bdb4;--textdim:#63605a;--textmuted:#3a3830;
+  --r:8px;--sans:'Inter',system-ui,sans-serif;--mono:'JetBrains Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.7;min-height:100vh;overflow-x:hidden}
+.layout{display:grid;grid-template-columns:228px 1fr;min-height:100vh}
+/* SIDEBAR */
+.sidebar{position:sticky;top:0;height:100vh;overflow-y:auto;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column}
+.sb-logo{padding:22px 18px 18px;border-bottom:1px solid var(--border)}
+.sb-logo .title{font-size:.82rem;font-weight:700;color:var(--gold);letter-spacing:.06em;text-transform:uppercase}
+.sb-logo .patch{font-family:var(--mono);font-size:.62rem;color:var(--textdim);margin-top:3px;letter-spacing:.06em}
+.sb-progress{padding:14px 18px;border-bottom:1px solid var(--border)}
+.sb-prog-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;font-size:.65rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--textdim)}
+.sb-prog-header span{font-family:var(--mono);color:var(--gold)}
+.track{height:2px;background:var(--surface3);border-radius:99px;overflow:hidden}
+.fill{height:100%;background:linear-gradient(90deg,var(--golddim),var(--gold));border-radius:99px;transition:width .35s ease;width:0%}
+nav{flex:1;overflow-y:auto;padding:8px 0}
+.nav-group{margin-bottom:4px}
+.nav-group-label{font-size:.58rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--textmuted);padding:10px 18px 4px}
+.nav-a{display:flex;align-items:center;gap:9px;padding:6px 18px;font-size:.75rem;font-weight:500;color:var(--textdim);text-decoration:none;cursor:pointer;border:none;background:none;width:100%;text-align:left;transition:color .12s,background .12s;border-radius:0}
+.nav-a:hover{color:var(--text);background:rgba(255,255,255,0.03)}
+.nav-a.active{color:var(--gold);background:var(--goldglow)}
+.nav-dot{width:5px;height:5px;border-radius:50%;background:var(--textmuted);flex-shrink:0;transition:background .12s}
+.nav-a.active .nav-dot{background:var(--gold);box-shadow:0 0 5px var(--gold)}
+.nav-cnt{margin-left:auto;font-family:var(--mono);font-size:.58rem;color:var(--textmuted)}
+.sb-foot{padding:14px 18px;border-top:1px solid var(--border);margin-top:auto}
+.reset-btn{width:100%;padding:7px;background:transparent;border:1px solid var(--border2);border-radius:var(--r);color:var(--textdim);font-family:var(--sans);font-size:.68rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .15s}
+.reset-btn:hover{border-color:var(--red);color:var(--red)}
+/* MAIN */
+main{overflow:hidden}
+.hero{padding:56px 44px 44px;border-bottom:1px solid var(--border);background:linear-gradient(160deg,var(--surface) 0%,var(--bg) 100%);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 80% 50%,rgba(212,168,71,0.04),transparent);pointer-events:none}
+.hero-chip{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.65rem;color:var(--blue);border:1px solid rgba(74,158,255,0.2);background:var(--bluedim);padding:3px 10px;border-radius:99px;margin-bottom:18px;letter-spacing:.04em}
+.hero-chip::before{content:'●';font-size:.45rem;animation:blink 2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hero h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;color:#fff;letter-spacing:-.03em;line-height:1.1;margin-bottom:10px}
+.hero h1 em{color:var(--gold);font-style:normal}
+.hero-sub{font-size:.9rem;color:var(--textdim);max-width:480px;margin-bottom:24px;font-weight:300}
+.hero-stats{display:flex;gap:0;flex-wrap:wrap}
+.h-stat{padding:9px 18px;border:1px solid var(--border);border-right:none;background:var(--surface)}
+.h-stat:first-child{border-radius:var(--r) 0 0 var(--r)}
+.h-stat:last-child{border-right:1px solid var(--border);border-radius:0 var(--r) var(--r) 0}
+.h-stat-label{font-size:.58rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--textmuted)}
+.h-stat-val{font-family:var(--mono);font-size:.82rem;color:var(--gold);margin-top:2px}
+/* SECTION */
+.sec{padding:44px 44px 32px;border-bottom:1px solid var(--border);scroll-margin-top:0}
+.eyebrow{font-family:var(--mono);font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;display:flex;align-items:center;gap:10px}
+.eyebrow::after{content:'';height:1px;background:var(--border);width:60px}
+.sec-title{font-size:1.35rem;font-weight:800;color:#fff;letter-spacing:-.02em;margin-bottom:4px}
+.sec-sub{font-size:.88rem;color:var(--textdim);margin-bottom:24px;font-weight:300;font-style:italic}
+/* CALLOUTS */
+.callout{border-radius:var(--r);padding:13px 16px;margin:18px 0;font-size:.88rem;display:flex;gap:12px;align-items:flex-start}
+.c-icon{font-size:.95rem;margin-top:1px;flex-shrink:0}
+.c-label{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px}
+.callout.tip{background:rgba(212,168,71,0.07);border:1px solid rgba(212,168,71,0.18)}
+.callout.tip .c-label{color:var(--gold)}
+.callout.warn{background:rgba(232,146,58,0.07);border:1px solid rgba(232,146,58,0.18)}
+.callout.warn .c-label{color:var(--amber)}
+.callout.info{background:var(--bluedim);border:1px solid rgba(74,158,255,0.18)}
+.callout.info .c-label{color:var(--blue)}
+.callout.loot{background:var(--purpledim);border:1px solid rgba(155,111,212,0.2)}
+.callout.loot .c-label{color:var(--purple)}
+/* ACT HEADER */
+.act-hdr{display:flex;align-items:flex-start;gap:14px;margin-bottom:22px}
+.act-n{font-size:2.2rem;font-weight:800;color:var(--gold);opacity:.25;line-height:1;flex-shrink:0;min-width:44px;text-align:right;margin-top:2px}
+.act-label{font-family:var(--mono);font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--textmuted)}
+.act-name{font-size:1.25rem;font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.2}
+.act-desc{font-size:.83rem;color:var(--textdim);font-weight:300;margin-top:2px}
+/* TIPS GRID */
+.tips-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;margin-bottom:20px}
+.tip-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:16px;transition:border-color .15s}
+.tip-card:hover{border-color:var(--border2)}
+.tip-icon{font-size:1.2rem;margin-bottom:8px}
+.tip-name{font-size:.72rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--text);margin-bottom:5px}
+.tip-body{font-size:.82rem;color:var(--textdim);line-height:1.55;font-weight:300}
+/* ZONE ITEMS */
+.zone-list{display:flex;flex-direction:column;gap:5px}
+.zone-item{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:border-color .15s}
+.zone-item:hover{border-color:var(--border2)}
+.zone-item.checked{opacity:.55}
+.zone-item.checked .zone-name{text-decoration:line-through;text-decoration-color:var(--textmuted)}
+.zone-top{display:flex;align-items:center;gap:10px;padding:11px 14px;cursor:pointer;user-select:none}
+.zone-checkbox{appearance:none;-webkit-appearance:none;width:16px;height:16px;border:1.5px solid var(--border2);border-radius:4px;background:transparent;cursor:pointer;flex-shrink:0;position:relative;transition:all .12s}
+.zone-checkbox:checked{background:var(--gold);border-color:var(--gold)}
+.zone-checkbox:checked::after{content:'';position:absolute;left:3px;top:0px;width:4px;height:8px;border:2px solid #07090d;border-top:none;border-left:none;transform:rotate(45deg)}
+.zone-checkbox:hover{border-color:var(--gold)}
+.zone-name{font-size:.8rem;font-weight:600;color:var(--text);flex:1;letter-spacing:-.005em}
+.zone-tags{display:flex;gap:4px;flex-wrap:wrap}
+.tag{font-family:var(--mono);font-size:.57rem;letter-spacing:.03em;padding:2px 7px;border-radius:99px;white-space:nowrap;font-weight:500}
+.tag.req{background:var(--reddim);color:#e07070;border:1px solid rgba(212,64,64,0.22)}
+.tag.opt{background:var(--bluedim);color:#7ab8ff;border:1px solid rgba(74,158,255,0.18)}
+.tag.loot{background:var(--purpledim);color:#c49de8;border:1px solid rgba(155,111,212,0.18)}
+.tag.wp{background:var(--greendim);color:#7adaa0;border:1px solid rgba(61,186,110,0.18)}
+.tag.skip{background:rgba(255,255,255,0.03);color:var(--textmuted);border:1px solid var(--border)}
+.tag.boss{background:rgba(212,168,71,0.08);color:var(--gold);border:1px solid rgba(212,168,71,0.18)}
+.zone-expand-btn{background:none;border:none;color:var(--textmuted);cursor:pointer;padding:2px 4px;font-size:.7rem;transition:color .12s,transform .18s;flex-shrink:0}
+.zone-expand-btn:hover{color:var(--text)}
+.zone-item.expanded .zone-expand-btn{transform:rotate(90deg)}
+.zone-body{display:none;padding:0 14px 13px 40px;border-top:1px solid var(--border)}
+.zone-item.expanded .zone-body{display:block}
+.zone-body p{font-size:.85rem;color:var(--textdim);margin-top:9px;font-weight:300}
+.zone-body ul{margin-top:9px;list-style:none;display:flex;flex-direction:column;gap:4px}
+.zone-body li{font-size:.83rem;color:var(--textdim);padding-left:14px;position:relative;line-height:1.5;font-weight:300}
+.zone-body li::before{content:'›';position:absolute;left:0;color:var(--golddim)}
+.zone-body li strong{color:var(--text);font-weight:600}
+.zone-body li em{color:var(--gold);font-style:normal}
+.zone-body li.hl{color:var(--gold)}
+.zone-body li.hl::before{color:var(--gold)}
+/* BOSS CARD */
+.boss-card{background:linear-gradient(135deg,rgba(212,64,64,0.07) 0%,var(--surface3) 100%);border:1px solid rgba(212,64,64,0.18);border-left:3px solid var(--red);border-radius:var(--r);padding:12px 14px;margin-top:10px}
+.boss-title{font-size:.75rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#e07070;margin-bottom:6px;display:flex;align-items:center;gap:7px}
+.boss-title::before{content:'⚔';font-size:.85rem}
+.boss-tip{font-size:.83rem;color:var(--textdim);line-height:1.55;font-weight:300}
+.boss-tip strong{color:var(--text);font-weight:600}
+/* ROUTE FLOW */
+.route-flow{display:flex;flex-direction:column;gap:0;position:relative;margin:18px 0}
+.route-flow::before{content:'';position:absolute;left:19px;top:20px;bottom:20px;width:1px;background:linear-gradient(to bottom,var(--golddim),transparent)}
+.route-stop{display:flex;gap:14px;align-items:flex-start;padding:10px 0}
+.route-num{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.72rem;font-weight:700;flex-shrink:0;z-index:1;border:2px solid}
+.route-num.main{border-color:var(--gold);color:var(--gold);background:rgba(212,168,71,0.08)}
+.route-num.side{border-color:var(--blue);color:var(--blue);background:var(--bluedim)}
+.route-num.skip{border-color:var(--textmuted);color:var(--textmuted);background:var(--surface2)}
+.route-content{flex:1;padding-top:7px}
+.route-name{font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:2px;letter-spacing:-.005em}
+.route-name.main{color:var(--gold)}
+.route-desc{font-size:.8rem;color:var(--textdim);font-weight:300;line-height:1.5}
+.route-rewards{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}
+.rp{font-family:var(--mono);font-size:.58rem;padding:2px 7px;border-radius:99px;border:1px solid;font-weight:500}
+.rp.perm{color:var(--gold);border-color:var(--golddim);background:rgba(212,168,71,0.07)}
+.rp.gem{color:var(--blue);border-color:rgba(74,158,255,0.25);background:var(--bluedim)}
+.rp.curr{color:var(--green);border-color:rgba(61,186,110,0.25);background:var(--greendim)}
+.rp.sk{color:var(--textmuted);border-color:var(--border);background:transparent}
+/* REWARD TABLE */
+.rtable{width:100%;border-collapse:collapse;margin-top:8px;font-size:.83rem}
+.rtable th{font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--textmuted);text-align:left;padding:7px 10px;border-bottom:1px solid var(--border)}
+.rtable td{padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:middle}
+.rtable tr:last-child td{border-bottom:none}
+.rtable tr:hover td{background:rgba(255,255,255,0.015)}
+.rs{color:var(--textdim);font-weight:300;font-style:italic}
+.ri{color:var(--purple);font-weight:500}
+.ri.g{color:var(--gold)}
+.ri.b{color:var(--blue)}
+.ri.gr{color:var(--green)}
+.rchk{appearance:none;-webkit-appearance:none;width:15px;height:15px;border:1.5px solid var(--border2);border-radius:3px;background:transparent;cursor:pointer;position:relative;transition:all .12s;display:inline-block;vertical-align:middle;flex-shrink:0}
+.rchk:checked{background:var(--gold);border-color:var(--gold)}
+.rchk:checked::after{content:'';position:absolute;left:3px;top:0;width:4px;height:7px;border:2px solid #07090d;border-top:none;border-left:none;transform:rotate(45deg)}
+.rchk:hover{border-color:var(--gold)}
 /* scrollbar */
-::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 99px; }
-::-webkit-scrollbar-thumb:hover { background: var(--gold-dim); }
-
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:99px}
+::-webkit-scrollbar-thumb:hover{background:var(--golddim)}
 /* mobile */
-@media (max-width: 800px) {
-  .layout { grid-template-columns: 1fr; }
-  .sidebar { position: static; height: auto; width: 100%; border-right: none; border-bottom: 1px solid var(--border); flex-direction: row; flex-wrap: wrap; overflow: visible; }
-  .hero { padding: 32px 24px; }
-  .content-section { padding: 32px 24px 24px; }
-  .hero::before { display: none; }
-}
+@media(max-width:780px){.layout{grid-template-columns:1fr}.sidebar{position:static;height:auto;border-right:none;border-bottom:1px solid var(--border)}.hero,.sec{padding:28px 20px 22px}}
 </style>
 </head>
 <body>
 <div class="layout">
-
-<!-- ═══ SIDEBAR ═══ -->
-<aside class="sidebar" id="sidebar">
-  <div class="sidebar-logo">
-    <div class="game-title">Path of Exile 2</div>
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sb-logo">
+    <div class="title">Path of Exile 2</div>
     <div class="patch">Patch 0.5.0 · Runes of Aldur</div>
   </div>
-
-  <div class="progress-wrap">
-    <div class="progress-label">Progress <span id="progress-text">0 / 0</span></div>
-    <div class="progress-bar-track"><div class="progress-bar-fill" id="progress-bar"></div></div>
+  <div class="sb-progress">
+    <div class="sb-prog-header">Progress <span id="prog-txt">0 / 0</span></div>
+    <div class="track"><div class="fill" id="prog-bar"></div></div>
   </div>
-
   <nav>
-    <div class="nav-section">
-      <div class="nav-section-label">General</div>
-      <a class="nav-link active" href="#speed" onclick="return scrollTo('speed')">
-        <span class="nav-dot"></span> Speed Fundamentals
-      </a>
+    <div class="nav-group">
+      <div class="nav-group-label">General</div>
+      <button class="nav-a active" onclick="navTo('speed')"><span class="nav-dot"></span>Speed Fundamentals</button>
     </div>
-    <div class="nav-section">
-      <div class="nav-section-label">Campaign</div>
-      <a class="nav-link" href="#act1" onclick="return scrollTo('act1')">
-        <span class="nav-dot"></span> Act I — Ogham Province
-        <span class="nav-check" id="nav-check-act1"></span>
-      </a>
-      <a class="nav-link" href="#act2" onclick="return scrollTo('act2')">
-        <span class="nav-dot"></span> Act II — Vastiri Desert
-        <span class="nav-check" id="nav-check-act2"></span>
-      </a>
-      <a class="nav-link" href="#act3" onclick="return scrollTo('act3')">
-        <span class="nav-dot"></span> Act III — Ziggurat
-        <span class="nav-check" id="nav-check-act3"></span>
-      </a>
-      <a class="nav-link" href="#act4" onclick="return scrollTo('act4')">
-        <span class="nav-dot"></span> Act IV — Kingsmarch
-        <span class="nav-check" id="nav-check-act4"></span>
-      </a>
-      <a class="nav-link" href="#interludes" onclick="return scrollTo('interludes')">
-        <span class="nav-dot"></span> Interludes
-        <span class="nav-check" id="nav-check-interludes"></span>
-      </a>
+    <div class="nav-group">
+      <div class="nav-group-label">Campaign</div>
+      <button class="nav-a" onclick="navTo('act1')"><span class="nav-dot"></span>Act I — Ogham Province<span class="nav-cnt" id="nc-act1"></span></button>
+      <button class="nav-a" onclick="navTo('act2')"><span class="nav-dot"></span>Act II — Vastiri Desert<span class="nav-cnt" id="nc-act2"></span></button>
+      <button class="nav-a" onclick="navTo('act3')"><span class="nav-dot"></span>Act III — Ziggurat<span class="nav-cnt" id="nc-act3"></span></button>
+      <button class="nav-a" onclick="navTo('act4')"><span class="nav-dot"></span>Act IV — Kingsmarch<span class="nav-cnt" id="nc-act4"></span></button>
+      <button class="nav-a" onclick="navTo('interludes')"><span class="nav-dot"></span>Interludes<span class="nav-cnt" id="nc-interludes"></span></button>
     </div>
-    <div class="nav-section">
-      <div class="nav-section-label">Reference</div>
-      <a class="nav-link" href="#rewards" onclick="return scrollTo('rewards')">
-        <span class="nav-dot"></span> Reward Checklist
-      </a>
+    <div class="nav-group">
+      <div class="nav-group-label">Reference</div>
+      <button class="nav-a" onclick="navTo('rewards')"><span class="nav-dot"></span>Reward Checklist</button>
     </div>
   </nav>
-
-  <div class="sidebar-footer">
-    <button class="reset-btn" onclick="resetAll()">Reset All Progress</button>
-  </div>
+  <div class="sb-foot"><button class="reset-btn" onclick="resetAll()">Reset All Progress</button></div>
 </aside>
-
-<!-- ═══ MAIN ═══ -->
+<!-- MAIN -->
 <main>
-
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-badge">Live · Return of the Ancients · May 29 2026</div>
+  <div class="hero-chip">Live · Return of the Ancients</div>
   <h1>Campaign <em>Speed</em><br>Walkthrough</h1>
-  <p class="hero-sub">Professional route guide for patch 0.5.0. Every crucial reward, optimal routing, and boss strategy — with progress tracking.</p>
+  <p class="hero-sub">Professional route for patch 0.5.0. Every crucial reward, optimal routing, and boss strategy — with full progress tracking.</p>
   <div class="hero-stats">
-    <div class="hero-stat">
-      <div class="stat-label">Acts</div>
-      <div class="stat-value">4 + 3</div>
-    </div>
-    <div class="hero-stat">
-      <div class="stat-label">Target Time</div>
-      <div class="stat-value">~5–8 hrs</div>
-    </div>
-    <div class="hero-stat">
-      <div class="stat-label">Patch</div>
-      <div class="stat-value">0.5.0b</div>
-    </div>
-    <div class="hero-stat">
-      <div class="stat-label">League</div>
-      <div class="stat-value">Runes of Aldur</div>
-    </div>
+    <div class="h-stat"><div class="h-stat-label">Acts</div><div class="h-stat-val">4 + 3</div></div>
+    <div class="h-stat"><div class="h-stat-label">Target Time</div><div class="h-stat-val">5–8 hrs</div></div>
+    <div class="h-stat"><div class="h-stat-label">Patch</div><div class="h-stat-val">0.5.0b</div></div>
+    <div class="h-stat"><div class="h-stat-label">League</div><div class="h-stat-val">Runes of Aldur</div></div>
   </div>
 </section>
-
-<!-- ═══ SPEED FUNDAMENTALS ═══ -->
-<section class="content-section" id="speed">
-  <div class="section-eyebrow">Foundation</div>
-  <h2 class="section-title">Speed Fundamentals</h2>
-  <p class="section-subtitle">Core habits that shave hours off every run, regardless of class or build.</p>
-
+<!-- SPEED -->
+<section class="sec" id="speed">
+  <div class="eyebrow">Foundation</div>
+  <h2 class="sec-title">Speed Fundamentals</h2>
+  <p class="sec-sub">Core habits that shave hours off every run, regardless of class or build.</p>
   <div class="tips-grid">
-    <div class="tip-card">
-      <div class="tip-icon">🧱</div>
-      <div class="tip-name">Hug the Wall</div>
-      <div class="tip-body">Default navigation in any unknown zone: hug one wall consistently. Confirmed by top speedrunners — this reliably leads to exits, bosses, and objectives 9/10 times in PoE2's semi-procedural layouts.</div>
-    </div>
-    <div class="tip-card">
-      <div class="tip-icon">⚔️</div>
-      <div class="tip-name">Front-Load Damage Nodes</div>
-      <div class="tip-body">Spend your first 10 passive points exclusively on damage clusters near your class start. Warrior earns ~108% increased melee damage this way. This functions as a massive multiplier that snowballs your kill speed for the entire campaign.</div>
-    </div>
-    <div class="tip-card">
-      <div class="tip-icon">⏩</div>
-      <div class="tip-name">Keep Moving Always</div>
-      <div class="tip-body">Inefficient progress beats no progress. Don't stop to study every item on the ground. In 0.5, GGG added visual trail cues — follow locusts, blood trails, and signposts toward objectives. They reliably lead you forward.</div>
-    </div>
-    <div class="tip-card">
-      <div class="tip-icon">⌨️</div>
-      <div class="tip-name">Fast Passive Allocation</div>
-      <div class="tip-body">Hold Ctrl while clicking passive nodes to instantly confirm without the dialog popup. Use Ctrl+Shift+Click to bind weapon sets. These small time saves compound massively across a full campaign run.</div>
-    </div>
-    <div class="tip-card">
-      <div class="tip-icon">💀</div>
-      <div class="tip-name">Delayed Ascendancy Is Fine</div>
-      <div class="tip-body">Don't hard-detour for your Ascendancy trial mid-campaign if it breaks momentum. Complete it when it naturally falls in your path. Time lost forcing a detour exceeds most Ascendancy DPS gains in Acts 1–2.</div>
-    </div>
-    <div class="tip-card">
-      <div class="tip-icon">🗡️</div>
-      <div class="tip-name">Weapon Over Armour</div>
-      <div class="tip-body">In the early campaign a better weapon almost always provides more effective speed than defensive upgrades. Faster kills = less time taking damage. Check vendors at every town visit; prioritize a damage prefix on your weapon type.</div>
-    </div>
-    <div class="tip-card">
-      <div class="tip-icon">⚗️</div>
-      <div class="tip-name">Always Have Two Flasks</div>
-      <div class="tip-body">A Life Flask and a Mana Flask are mandatory from Act 1 onward. Buy them from Una in Clearfell if you don't drop them naturally. Flask uptime during boss fights is more important than almost any other variable.</div>
-    </div>
-    <div class="tip-card">
-      <div class="tip-icon">🔮</div>
-      <div class="tip-name">Consume Skulls Immediately</div>
-      <div class="tip-body">Gembloom and Gemrot Skulls are permanent +30 Spirit buffs that also generate a Spirit Gem. Always consume them on the spot — Spirit is the foundational resource for persistent skills and scales with your build for the entire game.</div>
-    </div>
+    <div class="tip-card"><div class="tip-icon">🧱</div><div class="tip-name">Hug the Wall</div><div class="tip-body">Default navigation in unknown zones: hug one wall consistently. Confirmed by top speedrunners — reliably leads to exits, bosses, and objectives 9/10 times in PoE2's semi-procedural layouts.</div></div>
+    <div class="tip-card"><div class="tip-icon">⚔️</div><div class="tip-name">Front-Load Damage Nodes</div><div class="tip-body">Spend your first 10 passive points exclusively on damage clusters near your class start. Warrior earns ~108% increased melee damage. This functions as a massive multiplier that snowballs kill speed for the entire campaign.</div></div>
+    <div class="tip-card"><div class="tip-icon">⏩</div><div class="tip-name">Keep Moving Always</div><div class="tip-body">Inefficient progress beats no progress. Don't stop to study every item. In 0.5, GGG added visual trail cues — follow locusts, blood trails, and signposts toward objectives.</div></div>
+    <div class="tip-card"><div class="tip-icon">⌨️</div><div class="tip-name">Fast Passive Allocation</div><div class="tip-body">Hold Ctrl while clicking passive nodes to instantly confirm without the dialog popup. Use Ctrl+Shift+Click to bind weapon sets. Small time saves compound massively across a full run.</div></div>
+    <div class="tip-card"><div class="tip-icon">💀</div><div class="tip-name">Delayed Ascendancy Is Fine</div><div class="tip-body">Don't hard-detour for your Ascendancy trial mid-campaign if it breaks momentum. The time lost forcing a detour exceeds most Ascendancy DPS gains in Acts 1–2.</div></div>
+    <div class="tip-card"><div class="tip-icon">🗡️</div><div class="tip-name">Weapon Over Armour</div><div class="tip-body">In the early campaign a better weapon almost always provides more effective speed than defensive upgrades. Faster kills = less time taking damage. Check vendors at every town visit.</div></div>
+    <div class="tip-card"><div class="tip-icon">⚗️</div><div class="tip-name">Always Have Two Flasks</div><div class="tip-body">A Life Flask and a Mana Flask are mandatory from Act 1 onward. Buy from Una in Clearfell if you don't find them. Flask uptime during boss fights matters more than almost any other variable.</div></div>
+    <div class="tip-card"><div class="tip-icon">🔮</div><div class="tip-name">Consume Skulls Immediately</div><div class="tip-body">Gembloom and Gemrot Skulls are permanent +30 Spirit buffs that also generate a Spirit Gem. Consume on the spot — Spirit is the foundational resource for persistent skills and scales with your build for the entire game.</div></div>
   </div>
-
-  <div class="callout info">
-    <div class="callout-icon">ℹ️</div>
-    <div class="callout-content">
-      <div class="callout-label">0.5.0 Campaign Changes</div>
-      Acts 1–3 were rebuilt — all prior speedrun routes are obsolete. The campaign now has shorter areas, smoother Act 3 progression, automatic Waterways pressure pads, and reduced monster density in late campaign sections and Interludes. Visual navigation cues (locust paths, blood trails, signposts) replace memorized layouts.
-    </div>
-  </div>
+  <div class="callout info"><div class="c-icon">ℹ️</div><div><div class="c-label">0.5.0 Campaign Changes</div>Acts 1–3 were rebuilt — all prior speedrun routes are obsolete. The campaign now has shorter areas, smoother Act 3 progression, automatic Waterways pressure pads, and reduced monster density in late sections and Interludes. Visual navigation cues (locust paths, blood trails, signposts) replace memorized layouts.</div></div>
 </section>
-
-<!-- ═══ ACT 1 ═══ -->
-<section class="content-section" id="act1">
-  <div class="section-eyebrow">Act One</div>
-  <div class="act-header">
-    <div class="act-num">I</div>
-    <div class="act-info">
-      <div class="act-label">The Ogham Province</div>
-      <div class="act-name">Dark Forests & Haunted Estates</div>
-      <div class="act-desc">Beach to Count's manor. Follow the corruption through forests, crypts, and blighted farmlands.</div>
-    </div>
-  </div>
-
-  <div class="callout tip">
-    <div class="callout-icon">⚡</div>
-    <div class="callout-content">
-      <div class="callout-label">Act 1 Speed Strategy</div>
-      The Freythorn (+30 Spirit + Spirit Gem L4 from King in the Mists) is the single most important optional in Act 1 — never skip it. For Secrets in the Dark, clear the Red Vale Obelisks before going deep into Grelwood to avoid backtracking. Candlemass (+20 Max Life) is a free kill on the way to Geonor.
-    </div>
-  </div>
-
+<!-- ACT 1 -->
+<section class="sec" id="act1">
+  <div class="eyebrow">Act One</div>
+  <div class="act-hdr"><div class="act-n">I</div><div><div class="act-label">The Ogham Province</div><div class="act-name">Dark Forests & Haunted Estates</div><div class="act-desc">Beach to Count's manor. Follow the corruption through forests, crypts, and blighted farmlands.</div></div></div>
+  <div class="callout tip"><div class="c-icon">⚡</div><div><div class="c-label">Act 1 Speed Strategy</div>Freythorn (+30 Spirit + Spirit Gem L4) is the most important optional in Act 1 — never skip it. For Secrets in the Dark, clear the Red Vale Obelisks before going deep into Grelwood to avoid backtracking. Candlemass (+20 Max Life) is a free kill on the way to Geonor.</div></div>
   <div class="zone-list">
-
-    <div class="zone-item" id="z-a1-riverbank">
-      <div class="zone-top">
-        <input type="checkbox" class="zone-checkbox" data-id="a1-riverbank" onclick="toggleCheck(event,'a1-riverbank')">
-        <span class="zone-name">The Riverbank</span>
-        <div class="zone-tags"><span class="tag req">Required</span><span class="tag wp">Waypoint</span><span class="tag loot">First Skill Gem</span></div>
-        <button class="zone-expand-btn" onclick="toggleExpand(event,'z-a1-riverbank')">▶</button>
-      </div>
-      <div class="zone-body">
-        <ul>
-          <li>Speak to the wounded man. Kill the Zombie. <strong>Equip your starting weapon immediately.</strong></li>
-          <li>Find the <em>Large Chest</em> mid-zone — your first Skill Gem. Socket it (G key) and bind it to your skill bar before moving on.</li>
-          <li>Kill <strong>Bloated Miller</strong> (trivial). Exit to Clearfell Encampment.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="zone-item" id="z-a1-town">
-      <div class="zone-top">
-        <input type="checkbox" class="zone-checkbox" data-id="a1-town" onclick="toggleCheck(event,'a1-town')">
-        <span class="zone-name">Clearfell Encampment — Town</span>
-        <div class="zone-tags"><span class="tag wp">Waypoint</span><span class="tag req">Town Hub</span></div>
-        <button class="zone-expand-btn" onclick="toggleExpand(event,'z-a1-town')">▶</button>
-      </div>
-      <div class="zone-body">
-        <ul>
-          <li><strong>Renly</strong> — Weapons, Armour, Shields. <em>Check his weapons immediately for a DPS upgrade.</em></li>
-          <li><strong>Una</strong> — Flasks, Rings, Amulets, Charms. Buy Life Flask + Mana Flask if missing.</li>
-          <li><strong>Finn</strong> — Gambles Gold for random gear. Skip unless you have excess gold.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="zone-item" id="z-a1-clearfell">
-      <div class="zone-top">
-        <input type="checkbox" class="zone-checkbox" data-id="a1-clearfell" onclick="toggleCheck(event,'a1-clearfell')">
-        <span class="zone-name">Clearfell</span>
-        <div class="zone-tags"><span class="tag wp">Waypoint</span><span class="tag opt">Optional Boss</span><span class="tag loot">+10% Cold Res</span></div>
-        <button class="zone-expand-btn" onclick="toggleExpand(event,'z-a1-clearfell')">▶</button>
-      </div>
-      <div class="zone-body">
-        <ul>
-          <li><strong>Optional: Beira of the Rotten Pack</strong> — Drops <em>Head of the Winter Wolf: +10% Cold Resistance (permanent)</em>. If you pass near it, always kill it.</li>
-          <li>Find the waypoint (right side). Exit toward The Grelwood.</li>
-          <li>Mud Burrow is accessible here — optional Devourer boss drops Uncut Support Gem L1. Only detour if you immediately need the gem.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="zone-item" id="z-a1-grelwood">
-      <div class="zone-top">
-        <input type="checkbox" class="zone-checkbox" data-id="a1-grelwood" onclick="toggleCheck(event,'a1-grelwood')">
-        <span class="zone-name">Grelwood → Red Vale (Secrets in the Dark)</span>
-        <div class="zone-tags"><span class="tag req">Required Quest</span><span class="tag wp">Waypoint</span></div>
-        <button class="zone-expand-btn" onclick="toggleExpand(event,'z-a1-grelwood')">▶</button>
-      </div>
-      <div class="zone-body">
-        <ul>
-          <li class="highlight">⚡ Go to Red Vale first — it prevents a backtrack trip.</li>
-          <li>Activate all 3 Obelisks of Rust → defeat each monster wave for <em>Runed Girdles</em>.</li>
-          <li>3rd Obelisk spawns <strong>The Rust King</strong> instead of a wave — kill it for the final Girdle.</li>
-          <li>Return to town → Renly gives you <em>Runed Spikes</em>. Return to Grelwood, find Tree of Souls, summon Una, stab spikes into 3 Runic Seals.</li>
-          <li>Speak to Una in zone, then again in town to complete quest.</li>
-          <li><strong>Areagne's Hut Cauldron</strong> — free Life+Mana Flask, no combat needed. Always grab it.</li>
-          <li><strong>Optional: Areagne, Forgotten Witch</strong> — Uncut Support Gem L1. Fight her if you're over-leveled; her teleport + cold degen is punishing at even level.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="zone-item" id="z-a1-cemetery">
-      <div class="zone-top">
-        <input type="checkbox" class="zone-checkbox" data-id="a1-cemetery" onclick="toggleCheck(event,'a1-cemetery')">
-        <span class="zone-name">Grim Tangle → Cemetery of the Eternals</span>
-        <div class="zone-tags"><span class="tag req">Required Quest</span><span class="tag wp">Waypoint</span></div>
-        <button class="zone-expand-btn" onclick="toggleExpand(event,'z-a1-cemetery')">▶</button>
-      </div>
-      <div class="zone-body">
-        <ul>
-          <li>Navigate Grim Tangle to Cemetery. Find NPC <strong>Lachlann the Lost</strong>.</li>
-          <li>Clear both sub-zones in the order you find them (no meaningful difference):</li>
-          <li><strong>Tomb of the Consort:</strong> Defeat Asinia, Praetor Consort → Asinia's Memorial Key Piece.</li>
-          <li><strong>Mausoleum of the Praetor:</strong> Defeat Draven, Eternal Praetor → Draven's Memorial Key Piece.</li>
-          <li>Open Memorial Gate at Cemetery → follow Lachlann → defeat <strong>Lachlann of Endless Lament</strong> → loot Count Lachlann's Ring.</li>
-          <li>Exit to Hunting Grounds, take waypoint, return to town to trigger the Hooded One revival cutscene.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="zone-item" id="z-a1-freythorn">
-      <div class="zone-top">
-        <input type="checkbox" class="zone-checkbox" data-id="a1-freythorn" onclick="toggleCheck(event,'a1-freythorn')">
-        <span class="zone-name">Hunting Grounds → Freythorn ★ NEVER SKIP</span>
-        <div class="zone-tags"><span class="tag boss">Boss</span><span class="tag loot">+30 Spirit</span><span class="tag loot">Spirit Gem L4</span></div>
-        <button class="zone-expand-btn" onclick="toggleExpand(event,'z-a1-freythorn')">▶</button>
-      </div>
-      <div class="zone-body">
-        <ul>
-          <li>Freythorn is accessed from Hunting Grounds via elevated wooden walkways.</li>
-          <li>Cleanse 3 Ritual Altars (defeat each wave). Then activate the large central Altar for the final wave.</li>
-          <li><em>+30 Spirit and an Uncut Spirit Gem L4 is your first major power spike. Do not skip this.</em></li>
-        </ul>
-        <div class="boss-card">
-          <div class="boss-title">King in the Mists</div>
-          <div class="boss-tip">Multi-phase. Watch the debuff color: <strong>Purple</strong> = keep moving or you'll be frozen. <strong>Red (Ritual of Meditation)</strong> = stand still or you'll freeze. If standing still is unsafe, build stagger bar and stun him. After kill: consume <em>Gembloom Skull</em> for +30 permanent Spirit + creates Uncut Spirit Gem L4. Return to town, speak to Finn for a Ruby/Sapphire/Topaz Charm (pick your lowest resistance).</div>
-        </div>
-        <ul style="margin-top:12px">
-          <li><strong>Crowbell (Hunting Grounds optional)</strong> — Follow blood trail to locate it. Defeat for <em>+2 Weapon Set Passive Skill Points</em>. Worth it if you're near its location.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="zone-item" id="z-a1-farmlands">
-      <div class="zone-top">
-        <input type="checkbox" class="zone-checkbox" data-id="a1-farmlands" onclick="toggleCheck(event,'a1-farmlands')">
-        <span class="zone-name">Ogham Farmlands → Ogham Village</span>
-        <div class="zone-tags"><span class="tag req">Required</span><span class="tag loot">Skill Gem L5</span><span class="tag loot">Salvage Bench</span></div>
-        <button class="zone-expand-btn" onclick="toggleExpand(event,'z-a1-farmlands')">▶</button>
-      </div>
-      <div class="zone-body">
-        <ul>
-          <li><strong>The Lost Lute (Optional):</strong> Find Una's Lute in a hut → speak to Una → <em>+2 Weapon Set Passive Skill Points</em>. Grab if you spot the hut.</li>
-          <li><strong>Finding the Forge (Recommended):</strong> Find Renly's Smithing Tools → return to Renly → unlocks Salvage Bench. Enables socket component salvaging for the rest of the campaign.</li>
-          <li><strong>Blacksmith's Chest:</strong> Guaranteed <em>Artificer's Orb + Blank Rune</em>. Do not miss — it's marked in the zone.</li>
-          <li><strong>The Executioner (Required):</strong> Physical/Fire boss. Lethal slam attacks — watch animations and dodge roll out. Defeat him, free the prisoner above. Get waypoint at Courtyard, return to town → speak to Leitis for <em>Uncut Skill Gem Level 5</em>.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="zone-item" id="z-a1-manor">
-      <div class="zone-top">
-        <input type="checkbox" class="zone-checkbox" data-id="a1-manor" onclick="toggleCheck(event,'a1-manor')">
-        <span class="zone-name">Oghman Manor — Act 1 Final Boss</span>
-        <div class="zone-tags"><span class="tag boss">Act Boss</span><span class="tag loot">+20 Max Life</span><span class="tag req">Unlocks Act 2</span></div>
-        <button class="zone-expand-btn" onclick="toggleExpand(event,'z-a1-manor')">▶</button>
-      </div>
-      <div class="zone-body">
-        <ul>
-          <li><strong>Kill Candlemass first</strong> (1st floor, fire boss) → <em>Candlemass' Essence: +20 Maximum Life (permanent)</em>. Free power, always do this before Geonor.</li>
-        </ul>
-        <div class="boss-card">
-          <div class="boss-title">Count Geonor — Act 1 Final Boss</div>
-          <div class="boss-tip"><strong>Phase 1:</strong> Human + wolf hybrid. Bring below 50% HP.<br><strong>Fog Phase:</strong> Arena fills with fog. Kill small monsters for flask charges. Geonor lunges after each voice line — listen for cues, dodge roll sideways.<br><strong>Phase 2:</strong> Full wolf form, new arena-wide AoE abilities. Watch sweep animations. Stay mobile. After kill: town → Hooded One → select "Follow the Beast's trail" to unlock Act 2.</div>
-        </div>
-      </div>
-    </div>
-
+    <div class="zone-item" id="zi-a1-river"><div class="zone-top"><input type="checkbox" class="zone-checkbox" data-id="a1-river" onclick="chk(event,'a1-river')"><span class="zone-name">The Riverbank</span><div class="zone-tags"><span class="tag req">Required</span><span class="tag wp">Waypoint</span><span class="tag loot">First Skill Gem</span></div><button class="zone-expand-btn" onclick="exp(event,'zi-a1-river')">▶</button></div><div class="zone-body"><ul><li>Speak to the wounded man. Kill the Zombie. <strong>Equip your starting weapon immediately.</strong></li><li>Find the <em>Large Chest</em> mid-zone — first Skill Gem. Socket it (G key) and bind before continuing.</li><li>Kill <strong>Bloated Miller</strong> (trivial). Exit to Clearfell Encampment.</li></ul></div></div>
+    <div class="zone-item" id="zi-a1-town"><div class="zone-top"><input type="checkbox" class="zone-checkbox" data-id="a1-town" onclick="chk(event,'a1-town')"><span class="zone-name">Clearfell Encampment — Town</span><div class="zone-tags"><span class="tag wp">Waypoint</span><span class="tag req">Town Hub</span></div><button class="zone-expand-btn" onclick="exp(event,'zi-a1-town')">▶</button></div><div class="zone-body"><ul><li><strong>Renly</strong> — Weapons, Armour, Shields. <em>Check his weapons immediately for a DPS upgrade.</em></li><li><strong>Una</strong> — Flasks, Rings, Amulets, Charms. Buy Life + Mana Flask if missing.</li><li><strong>Finn</strong> — Gambles Gold. Skip unless you have excess gold.</li></ul></div></div>
+    <div class="zone-item" id="zi-a1-clearfell"><div class="zone-top"><input type="checkbox" class="zone-checkbox" data-id="a1-clearfell" onclick="chk(event,'a1-clearfell')"><span class="zone-name">Clearfell</span><div class="zone-tags"><span class="tag wp">Waypoint</span><span class="tag opt">Optional Boss</span><span class="tag loot">+10% Cold Res</span></div><button class="zone-expand-btn" onclick="exp(event,'zi-a1-clearfell')">▶</button></div><div class="zone-body"><ul><li><strong>Optional: Beira of the Rotten Pack</strong> — Drops <em>Head of the Winter Wolf: +10% Cold Resistance (permanent)</em>. Always kill if you pass near it.</li><li>Find waypoint (right side). Exit toward The Grelwood.</li><li>Mud Burrow accessible here — Devourer boss drops Uncut Support Gem L1. Only detour if you immediately need the gem.</li></ul></div></div>
+    <div class="zone-item" id="zi-a1-grel"><div class="zone-top"><input type="checkbox" class="zone-checkbox" data-id="a1-grel" onclick="chk(event,'a1-grel')"><span class="zone-name">Grelwood → Red Vale (Secrets in the Dark)</span><div class="zone-tags"><span class="tag req">Required Quest</span><span class="tag wp">Waypoint</span></div><button class="zone-expand-btn" onclick="exp(event,'zi-a1-grel')">▶</button></div><div class="zone-body"><ul><li class="hl">⚡ Go to Red Vale first — prevents a backtrack trip.</li><li>Activate all 3 Obelisks of Rust → defeat each wave for <em>Runed Girdles</em>. 3rd Obelisk spawns <strong>The Rust King</strong> instead of a wave.</li><li>Return to town → Renly gives <em>Runed Spikes</em>. Return to Grelwood, find Tree of Souls, summon Una, stab spikes into 3 Runic Seals. Speak to Una in zone then town.</li><li><strong>Areagne's Hut Cauldron</strong> — free Life+Mana Flask, no combat needed. Always grab it.</li><li><strong>Optional: Areagne, Forgotten Witch</strong> — Uncut Support Gem L1. Her teleport + cold degen is punishing at even level — only fight if over-leveled.</li></ul></div></div>
+    <div class="zone-item" id="zi-a1-cem"><div class="zone-top"><input type="checkbox" class="zone-checkbox" data-id="a1-cem" onclick="chk(event,'a1-cem')"><span class="zone-name">Grim Tangle → Cemetery of the Eternals</span><div class="zone-tags"><span class="tag req">Required Quest</span><span class="tag wp">Waypoint</span></div><button class="zone-expand-btn" onclick="exp(event,'zi-a1-cem')">▶</button></div><div class="zone-body"><ul><li>Find NPC <strong>Lachlann the Lost</strong> at Cemetery.</li><li><strong>Tomb of the Consort:</strong> Defeat Asinia, Praetor Consort → Memorial Key Piece.</li><li><strong>Mausoleum of the Praetor:</strong> Defeat Draven, Eternal Praetor → Memorial Key Piece.</li><li>Open Memorial Gate → follow Lachlann → defeat <strong>Lachlann of Endless Lament</strong> → loot Count Lachlann's Ring.</li><li>Exit to Hunting Grounds, take waypoint, return to town to trigger the Hooded One revival cutscene.</li></ul></div></div>
+    <div class="zone-item" id="zi-a1-frey"><div class="zone-top"><input type="checkbox" class="zone-checkbox" data-id="a1-frey" onclick="chk(event,'a1-frey')"><span class="zone-name">Hunting Grounds → Freythorn ★ NEVER SKIP</span><div class="zone-tags"><span class="tag boss">Boss</span><span class="tag loot">+30 Spirit</span><span class="tag loot">Spirit Gem L4</span></div><button class="zone-expand-btn" onclick="exp(event,'zi-a1-frey')">▶</button></div><div class="zone-body"><ul><li>Freythorn accessed from Hunting Grounds via elevated wooden walkways.</li><li>Cleanse 3 Ritual Altars (defeat each wave). Then activate the large central Altar for the final wave.</li></ul><div class="boss-card"><div class="boss-title">King in the Mists</div><div class="boss-tip">Multi-phase. Watch debuff color: <strong>Purple</strong> = keep moving or freeze. <strong>Red (Ritual of Meditation)</strong> = stand still or freeze. Build stagger bar to stun if standing still is unsafe.<br>After kill: consume <em>Gembloom Skull</em> → +30 permanent Spirit + Uncut Spirit Gem L4. Return to town, speak to Finn for Ruby/Sapphire/Topaz Charm — pick lowest resistance.</div></div><ul style="margin-top:10px"><li><strong>Crowbell (Hunting Grounds optional):</strong> Follow blood trail. Defeat for <em>+2 Weapon Set Passive Skill Points</em>. Grab if near its location.</li></ul></div></div>
+    <div class="zone-item" id="zi-a1-farm"><div class="zone-top"><input type="checkbox" class="zone-checkbox" data-id="a1-farm" onclick="chk(event,'a1-farm')"><span class="zone-name">Ogham Farmlands → Ogham Village</span><div class="zone-tags"><span class="tag req">Required</span><span class="tag loot">Skill Gem L5</span><span class="tag loot">Salvage Bench</span></div><button class="zone-expand-btn" onclick="exp(event,'zi-a1-farm')">▶</button></div><div class="zone-body"><ul><li><strong>The Lost Lute:</strong> Find Una's Lute in a hut → speak to Una → <em>+2 Weapon Set Passive Skill Points</em>.</li><li><strong>Finding the Forge:</strong> Find Renly's Smithing Tools → return to Renly → unlocks Salvage Bench.</li><li><strong>Blacksmith's Chest:</strong> Guaranteed <em>Artificer's Orb + Blank Rune</em>. Marked in zone — do not miss.</li><li><strong>The Executioner (Required):</strong> Physical/Fire boss. Lethal slam attacks — dodge roll out. Free prisoner above after kill. Courtyard waypoint → town → speak to Leitis for <em>Uncut Skill Gem Level 5</em>.</li></ul></div></div>
+    <div class="zone-item" id="zi-a1-manor"><div class="zone-top"><input type="checkbox" class="zone-checkbox" data-id="a1-manor" onclick="chk(event,'a1-manor')"><span class="zone-name">Oghman Manor — Act 1 Final Boss</span><div class="zone-tags"><span class="tag boss">Act Boss</span><span class="tag loot">+20 Max Life</span><span class="tag req">Unlocks Act 2</span></div><button class="zone-expand-btn" onclick="exp(event,'zi-a1-manor')">▶</button></div><div class="zone-body"><ul><li><strong>Kill Candlemass first</strong> (1st floor, fire boss) → <em>Candlemass' Essence: +20 Maximum Life (permanent)</em>.</li></ul><div class="boss-card"><div class="boss-title">Count Geonor — Act 1 Final Boss</div><div class="boss-tip"><strong>Phase 1:</strong> Human + wolf hybrid. Bring below 50% HP.<br><strong>Fog Phase:</strong> Kill small monsters for flask charges. Geonor lunges after each voice line — listen for cues, dodge roll sideways.<br><strong>Phase 2:</strong> Full wolf form with arena-wide AoE. Stay mobile. After kill: town → Hooded One → select "Follow the Beast's trail" to unlock Act 2.</div></div></div></div>
   </div>
 </section>
-
-<!-- ═══ ACT 2 ═══ -->
-<section class="content-section" id="act2">
-  <div class="section-eyebrow">Act Two</div>
-  <div class="act-header">
-    <div class="act-num">II</div>
-    <div class="act-info">
-      <div class="act-label">The Vastiri Desert</div>
-      <div class="act-name">Deserts, Ruins & Underground Caverns</div>
-      <div class="act-desc">Pursue Countess Oriana. Aid the Ardura Caravan against the corrupted Faradun. More open-ended than Act 1.</div>
-    </div>
-  </div>
-
-  <div class="callout tip">
-    <div class="callout-icon">⚡</div>
-    <div class="callout-content">
-      <div class="callout-label">Act 2 Speed Strategy</div>
-      Unlock Ardura Caravan's waypoint first — it becomes your return hub. Chain the Venom Crypts into the Mastodon Badlands run to avoid backtracking. The Ignaduk boss (Gemrot Skull = +30 Spirit + Gem L10) is your Act 2 equivalent of the Freythorn reward — prioritize it.
-    </div>
-  </div>
-
+<!-- ACT 2 -->
+<section class="sec" id="act2">
+  <div class="eyebrow">Act Two</div>
+  <div class="act-hdr"><div class="act-n">II</div><div><div class="act-label">The Vastiri Desert</div><div class="act-name">Deserts, Ruins & Caverns</div><div class="act-desc">Pursue Countess Oriana. Aid the Ardura Caravan against the corrupted Faradun. More open-ended than Act 1.</div></div></div>
+  <div class="callout tip"><div class="c-icon">⚡</div><div><div class="c-label">Act 2 Speed Strategy</div>Unlock Ardura Caravan's waypoint first — it's your return hub. Chain the Venom Crypts into the Mastodon Badlands run. Ignaduk (Gemrot Skull = +30 Spirit + Gem L10) is the Act 2 equivalent of the Freythorn reward — prioritize it.</div></div>
   <div class="zone-list">
-
-    <div class="zone-item" id="z-a2-outskirts">
-      <div class="zone-top">
-        <input type="checkbox" class="zone-checkbox" data-id="a2-outskirts" onclick="toggleCheck(event,'a2-outskirts')">
-        <span class="zone-name">Vastiri Outskirts — Combat Town</span>
-        <div class="zone-tags"><span class="tag wp">Waypoint</span><span class="tag req">Town + Boss</span><span class="tag loot">Skill Gem L5</span></div>
-        <button class="zone-expand-btn" onclick="toggleExpand(event,'z-a2-outskirts')">▶</button>
-      </div>
-      <div class="zone-body">
-        <ul>
-          <li>This is a combat town — monsters spawn nearby. Get the waypoint immediately.</li>
-          <li>NPCs: <strong>The Hooded One</strong>, <strong>Zarka</strong> (vendor — check for Act 2 weapons).</li>
-          <li><strong>Quest: Earning Passage</strong> — Defeat Rathbreaker at the entrance → <em>Uncut Skill Gem Level 5</em>.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="zone-item" id="z-a2-caravan">
-      <div class="zone-top">
-        <input type="checkbox" class="zone-checkbox" data-id="a2-caravan" onclick="toggleCheck(event,'a2-caravan')">
-        <span class="zone-name">Ardura Caravan → Mastodon Badlands</span>
-        <div class="zone-tags"><span class="tag req">Required</span><span class="tag wp">Waypoint</span></div>
-        <button class="zone-expand-btn" onclick="toggleExpand(event,'z-a2-caravan')">▶</button>
-      </div>
-      <div class="zone-body">
-        <ul>
-          <li>Find Ardura Caravan — Act 2's hub. Get waypoint. Speak to all NPCs to unlock quests.</li>
-          <li>At least one NPC sells higher-level gems for Act 2 — check inventory.</li>
-          <li>Progress to Mastodon Badlands for main quest objectives. Chain the Venom Crypts on the same run to avoid backtracking.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="zone-item" id="z-a2-ignaduk">
-      <div class="zone-top">
-        <input type="checkbox" class="zone-checkbox" data-id="a2-ignaduk" onclick="toggleCheck(event,'a2-ignaduk')">
-        <span class="zone-name">Ignaduk — Spirit Skull Boss ★ NEVER SKIP</span>
-        <div class="zone-tags"><span class="tag boss">Boss</span><span class="tag loot">+30 Spirit</span><span class="tag loot">Spirit Gem L10</span></div>
-        <button class="zone-expand-btn" onclick="toggleExpand(event,'z-a2-ignaduk')">▶</button>
-      </div>
-      <div class="zone-body">
-        <div class="boss-card">
-          <div class="boss-title">Ignaduk</div>
-          <div class="boss-tip">Defeat Ignaduk → loot <em>Gemrot Skull</em> → consume immediately for <strong>+30 permanent Spirit + Uncut Spirit Gem Level 10</strong>. This is the biggest power jump in Act 2. Return Ignaduk's Ghastly Spear to Servi in town for a <em>Magic Rarity Charm</em> — select based on your lowest resistance or best effect for your build.</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="zone-item" id="z-a2-ruins">
-      <div class="zone-top">
-        <input type="checkbox" class="zone-checkbox" data-id="a2-ruins" onclick="toggleCheck(event,'a2-ruins')">
-        <span class="zone-name">Ancient Ruins → Sandworn Road</span>
-        <div class="zone-tags"><span class="tag req">Required</span><span class="tag wp">Waypoints</span></div>
-        <button class="zone-expand-btn" onclick="toggleExpand(event,'z-a2-ruins')">▶</button>
-      </div>
-      <div class="zone-body">
-        <ul>
-          <li>Chain these zones efficiently — grab each waypoint as you pass through.</li>
-          <li>Sandworn Road leads to the Act 2 final area. Follow main quest markers.</li>
-          <li>Resistance checks become critical here — stop at Caravan to gear up if under-resisted.</li>
-          <li>Side quest encounters in this region often reward Passive Skill Points — do them if they appear near your current path.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="zone-item" id="z-a2-boss">
-      <div class="zone-top">
-        <input type="checkbox" class="zone-checkbox" data-id="a2-boss" onclick="toggleCheck(event,'a2-boss')">
-        <span class="zone-name">Act 2 Final Boss</span>
-        <div class="zone-tags"><span class="tag boss">Act Boss</span><span class="tag req">Unlocks Act 3</span></div>
-        <button class="zone-expand-btn" onclick="toggleExpand(event,'z-a2-boss')">▶</button>
-      </div>
-      <div class="zone-body">
-        <div class="boss-card">
-          <div class="boss-title">Act 2 Final Boss — Multi-phase Chaos/Poison</div>
-          <div class="boss-tip">Stay mobile throughout. Avoid standing in any ground effects — they stack debuffs quickly. Use flasks aggressively, especially during phase transitions. After the kill, return to the Hooded One to unlock Act 3 and transition forward.</div>
-        </div>
-      </div>
-    </div>
-
+    <div class="zone-item" id="zi-a2-out"><div class="zone-top"><input type="checkbox" class="zone-checkbox" data-id="a2-out" onclick="chk(event,'a2-out')"><span class="zone-name">Vastiri Outskirts — Combat Town</span><div class="zone-tags"><span class="tag wp">Waypoint</span><span class="tag req">Town + Boss</span><span class="tag loot">Skill Gem L5</span></div><button class="zone-expand-btn" onclick="exp(event,'zi-a2-out')">▶</button></div><div class="zone-body"><ul><li>Combat town — monsters spawn nearby. Get waypoint immediately.</li><li><strong>Zarka</strong> vendor — check for Act 2 weapons.</li><li><strong>Quest: Earning Passage</strong> — Defeat Rathbreaker at entrance → <em>Uncut Skill Gem Level 5</em>.</li></ul></div></div>
+    <div class="zone-item" id="zi-a2-car"><div class="zone-top"><input type="checkbox" class="zone-checkbox" data-id="a2-car" onclick="chk(event,'a2-car')"><span class="zone-name">Ardura Caravan → Mastodon Badlands</span><div class="zone-tags"><span class="tag req">Required</span><span class="tag wp">Waypoint</span></div><button class="zone-expand-btn" onclick="exp(event,'zi-a2-car')">▶</button></div><div class="zone-body"><ul><li>Find Ardura Caravan — Act 2 hub. Get waypoint. Speak to all NPCs.</li><li>Chain Venom Crypts into Mastodon Badlands in the same run to avoid backtracking.</li></ul></div></div>
+    <div class="zone-item" id="zi-a2-ign"><div class="zone-top"><input type="checkbox" class="zone-checkbox" data-id="a2-ign" onclick="chk(event,'a2-ign')"><span class="zone-name">Ignaduk — Spirit Skull Boss ★ NEVER SKIP</span><div class="zone-tags"><span class="tag boss">Boss</span><span class="tag loot">+30 Spirit</span><span class="tag loot">Spirit Gem L10</span></div><button class="zone-expand-btn" onclick="exp(event,'zi-a2-ign')">▶</button></div><div class="zone-body"><div class="boss-card"><div class="boss-title">Ignaduk</div><div class="boss-tip">Defeat Ignaduk → loot <em>Gemrot Skull</em> → consume immediately for <strong>+30 permanent Spirit + Uncut Spirit Gem Level 10</strong>. Biggest power jump in Act 2. Return Ignaduk's Ghastly Spear to Servi in town for a <em>Magic Rarity Charm</em>.</div></div></div></div>
+    <div class="zone-item" id="zi-a2-ruins"><div class="zone-top"><input type="checkbox" class="zone-checkbox" data-id="a2-ruins" onclick="chk(event,'a2-ruins')"><span class="zone-name">Ancient Ruins → Sandworn Road</span><div class="zone-tags"><span class="tag req">Required</span><span class="tag wp">Waypoints</span></div><button class="zone-expand-btn" onclick="exp(event,'zi-a2-ruins')">▶</button></div><div class="zone-body"><ul><li>Chain these zones efficiently — grab each waypoint as you pass through.</li><li>Sandworn Road leads to the Act 2 final area. Follow main quest markers.</li><li>Side quests in this region often reward Passive Skill Points — do them if near your path.</li></ul></div></div>
+    <div class="zone-item" id="zi-a2-boss"><div class="zone-top"><input type="checkbox" class="zone-checkbox" data-id="a2-boss" onclick="chk(event,'a2-boss')"><span class="zone-name">Act 2 Final Boss</span><div class="zone-tags"><span class="tag boss">Act Boss</span><span class="tag req">Unlocks Act 3</span></div><button class="zone-expand-btn" onclick="exp(event,'zi-a2-boss')">▶</button></div><div class="zone-body"><div class="boss-card"><div class="boss-title">Act 2 Final Boss — Multi-phase Chaos/Poison</div><div class="boss-tip">Stay mobile throughout. Avoid standing in any ground effects — they stack debuffs fast. Use flasks aggressively during phase transitions. After kill: return to Hooded One to unlock Act 3.</div></div></div></div>
   </div>
 </section>
-
-<!-- ═══ ACT 3 ═══ -->
-<section class="content-section" id="act3">
-  <div class="section-eyebrow">Act Three</div>
-  <div class="act-header">
-    <div class="act-num">III</div>
-    <div class="act-info">
-      <div class="act-label">The Ziggurat & Drowned City</div>
-      <div class="act-name">Ruins, Cannibals & The Apex of Filth</div>
-      <div class="act-desc">Corrupted city ruins with cannibal hordes. Streamlined in 0.5 — Waterways is now fully automatic.</div>
-    </div>
-  </div>
-
-  <div class="callout tip">
-    <div class="callout-icon">⚡</div>
-    <div class="callout-content">
-      <div class="callout-label">Act 3 Speed Strategy (0.5 Update)</div>
-      0.5 smoothed Act 3 significantly. Waterways pressure pads are now automatic — just walk through. Monster density is reduced in later areas. The main threats are the drowning orb mechanic in Drowned City and the Queen of Filth's mobility. Check vendors at Ziggurat Encampment for resistance fills before pushing forward.
-    </div>
-  </div>
-
+<!-- ACT 3 -->
+<section class="sec" id="act3">
+  <div class="eyebrow">Act Three</div>
+  <div class="act-hdr"><div class="act-n">III</div><div><div class="act-label">The Ziggurat & Drowned City</div><div class="act-name">Ruins, Cannibals & The Apex of Filth</div><div class="act-desc">Corrupted city ruins with cannibal hordes. Streamlined in 0.5 — Waterways is now fully automatic.</div></div></div>
+  <div class="callout tip"><div class="c-icon">⚡</div><div><div class="c-label">Act 3 Speed Strategy (0.5 Update)</div>0.5 smoothed Act 3 significantly. Waterways pressure pads are now automatic — just walk through. The main threats are the drowning orb mechanic in Drowned City and Queen of Filth's mobility. Check vendors at Ziggurat Encampment for resistance fills before pushing forward.</div></div>
   <div class="zone-list">
-
-    <div class="zone-item" id="z-a3-town">
-      <div class="zone-top">
-        <input type="checkbox" class="zone-checkbox" data-id="a3-town" onclick="toggleCheck(event,'a3-town')">
-        <span class="zone-name">Ziggurat Encampment — Town</span>
-        <div class="zone-tags"><span class="tag wp">Waypoint</span><span class="tag req">Town Hub</span></div>
-        <button class="zone-expand-btn" onclick="toggleExpand(event,'z-a3-town')">▶</button>
-      </div>
-      <div class="zone-body">
-        <ul>
-          <li>Vendors stock Act 3-tier gear. Check immediately for weapon and resistance upgrades.</li>
-          <li><em>Target: capped Cold/Fire/Lightning resistance + a DPS weapon competitive with your level before pushing forward.</em></li>
-          <li>Speak to all NPCs to unlock available quests.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="zone-item" id="z-a3-waterways">
-      <div class="zone-top">
-        <input type="checkbox" class="zone-checkbox" data-id="a3-waterways" onclick="toggleCheck(event,'a3-waterways')">
-        <span class="zone-name">Waterways (Streamlined in 0.5)</span>
-        <div class="zone-tags"><span class="tag req">Required</span><span class="tag wp">Waypoint</span></div>
-        <button class="zone-expand-btn" onclick="toggleExpand(event,'z-a3-waterways')">▶</button>
-      </div>
-      <div class="zone-body">
-        <ul>
-          <li class="highlight">Patch 0.5: Pressure pads are now automatic — just progress normally through the zone.</li>
-          <li>Navigate to the zone exit and push forward toward Apex of Filth.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="zone-item" id="z-a3-drowned">
-      <div class="zone-top">
-        <input type="checkbox" class="zone-checkbox" data-id="a3-drowned" onclick="toggleCheck(event,'a3-drowned')">
-        <span class="zone-name">The Drowned City</span>
-        <div class="zone-tags"><span class="tag req">Required</span><span class="tag wp">Waypoint</span></div>
-        <button class="zone-expand-btn" onclick="toggleExpand(event,'z-a3-drowned')">▶</button>
-      </div>
-      <div class="zone-body">
-        <ul>
-          <li>Cannibals, colossal volatile enemies (explode on death — move away during death animation), and the drowning mechanic.</li>
-          <li><strong>Drowning Orb:</strong> Moving teal orb that reduces vision. Stand in it too long = death. Always move away immediately when it approaches you.</li>
-          <li>Primary objective: reach the <em>Apex of Filth</em>.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="zone-item" id="z-a3-apex">
-      <div class="zone-top">
-        <input type="checkbox" class="zone-checkbox" data-id="a3-apex" onclick="toggleCheck(event,'a3-apex')">
-        <span class="zone-name">Apex of Filth — Act 3 Final Boss</span>
-        <div class="zone-tags"><span class="tag boss">Act Boss</span><span class="tag req">Unlocks Act 4</span></div>
-        <button class="zone-expand-btn" onclick="toggleExpand(event,'z-a3-apex')">▶</button>
-      </div>
-      <div class="zone-body">
-        <ul>
-          <li>Open runic zone — cannibals, volatile enemies, shamans, Filthy Crones (curse-based, physical projectiles).</li>
-        </ul>
-        <div class="boss-card">
-          <div class="boss-title">Queen of Filth — Act 3 Final Boss</div>
-          <div class="boss-tip">Physical and chaos themed. Extremely mobile — repositions constantly, requiring you to track her movement. Casts circular cursed ground patches — never stand in these (they apply debuffs quickly). Use Dodge Roll to avoid patches while staying on her. After kill, progress to Act 4 transition.</div>
-        </div>
-      </div>
-    </div>
-
+    <div class="zone-item" id="zi-a3-town"><div class="zone-top"><input type="checkbox" class="zone-checkbox" data-id="a3-town" onclick="chk(event,'a3-town')"><span class="zone-name">Ziggurat Encampment — Town</span><div class="zone-tags"><span class="tag wp">Waypoint</span><span class="tag req">Town Hub</span></div><button class="zone-expand-btn" onclick="exp(event,'zi-a3-town')">▶</button></div><div class="zone-body"><ul><li>Vendors stock Act 3-tier gear. Check immediately for weapon and resistance upgrades.</li><li><em>Target: capped Cold/Fire/Lightning resistance + competitive DPS weapon before pushing forward.</em></li></ul></div></div>
+    <div class="zone-item" id="zi-a3-water"><div class="zone-top"><input type="checkbox" class="zone-checkbox" data-id="a3-water" onclick="chk(event,'a3-water')"><span class="zone-name">Waterways (Streamlined in 0.5)</span><div class="zone-tags"><span class="tag req">Required</span><span class="tag wp">Waypoint</span></div><button class="zone-expand-btn" onclick="exp(event,'zi-a3-water')">▶</button></div><div class="zone-body"><ul><li class="hl">Patch 0.5: Pressure pads are automatic — just progress normally through the zone.</li><li>Navigate to the zone exit and push toward Apex of Filth.</li></ul></div></div>
+    <div class="zone-item" id="zi-a3-drown"><div class="zone-top"><input type="checkbox" class="zone-checkbox" data-id="a3-drown" onclick="chk(event,'a3-drown')"><span class="zone-name">The Drowned City</span><div class="zone-tags"><span class="tag req">Required</span><span class="tag wp">Waypoint</span></div><button class="zone-expand-btn" onclick="exp(event,'zi-a3-drown')">▶</button></div><div class="zone-body"><ul><li>Cannibals, colossal volatile enemies (explode on death — move away during death animation).</li><li><strong>Drowning Orb:</strong> Moving teal orb that reduces vision. Too long in it = death. Move away immediately.</li><li>Primary objective: reach the <em>Apex of Filth</em>.</li></ul></div></div>
+    <div class="zone-item" id="zi-a3-apex"><div class="zone-top"><input type="checkbox" class="zone-checkbox" data-id="a3-apex" onclick="chk(event,'a3-apex')"><span class="zone-name">Apex of Filth — Act 3 Final Boss</span><div class="zone-tags"><span class="tag boss">Act Boss</span><span class="tag req">Unlocks Act 4</span></div><button class="zone-expand-btn" onclick="exp(event,'zi-a3-apex')">▶</button></div><div class="zone-body"><div class="boss-card"><div class="boss-title">Queen of Filth — Act 3 Final Boss</div><div class="boss-tip">Physical and chaos themed. Extremely mobile — repositions constantly. Casts circular cursed ground patches — never stand in them. Use Dodge Roll to avoid patches while tracking her. After kill, progress to Act 4 transition.</div></div></div></div>
   </div>
 </section>
-
-<!-- ═══ ACT 4 ═══ -->
-<section class="content-section" id="act4">
-  <div class="section-eyebrow">Act Four</div>
-  <div class="act-header">
-    <div class="act-num">IV</div>
-    <div class="act-info">
-      <div class="act-label">Kingsmarch & The Karui Archipelago</div>
-      <div class="act-name">Non-Linear Island Exploration</div>
-      <div class="act-desc">Island-hop from Kingsmarch. Collect quest pieces, recruit allies, complete The Search to unlock Interludes.</div>
-    </div>
-  </div>
-
-  <div class="callout tip">
-    <div class="callout-icon">⚡</div>
-    <div class="callout-content">
-      <div class="callout-label">Act 4 Optimal Route — Speed + All Permanent Rewards</div>
-      Act 4 is non-linear but has a clear optimal path. The route below minimizes travel by chaining geographically close islands and ensures every permanent buff and passive point is collected. The Abandoned Prison flask buff (Life or Mana Recovery) is flexible and can be swapped later for free, so don't stress the choice.
-    </div>
-  </div>
-
-  <!-- OPTIMAL ROUTE FLOW -->
-  <div style="margin-bottom:28px;">
-    <div class="section-eyebrow" style="margin-bottom:14px;">Optimal Island Order</div>
-
+<!-- ACT 4 -->
+<section class="sec" id="act4">
+  <div class="eyebrow">Act Four</div>
+  <div class="act-hdr"><div class="act-n">IV</div><div><div class="act-label">Kingsmarch & The Karui Archipelago</div><div class="act-name">Non-Linear Island Exploration</div><div class="act-desc">Island-hop from Kingsmarch. Collect quest pieces, recruit allies, complete The Search to unlock Interludes.</div></div></div>
+  <div class="callout tip"><div class="c-icon">⚡</div><div><div class="c-label">Act 4 Optimal Route — Speed + All Permanent Rewards</div>Act 4 is non-linear but has a clear optimal path. The route below minimizes travel by chaining geographically close islands and ensures every permanent buff and passive point is collected.</div></div>
+  <div style="margin-bottom:24px">
+    <div class="eyebrow" style="margin-bottom:12px">Optimal Island Order</div>
     <div class="route-flow">
-
-      <div class="route-stop">
-        <div class="route-num main">1</div>
-        <div class="route-content">
-          <div class="route-name main">Kingsmarch — Hub Setup</div>
-          <div class="route-desc">Speak to Doryani/Alva → meet Rog and Makoru to unlock the full destination map. Get waypoint. Check vendors for Act 4 gear (level 46–52 zone range).</div>
-        </div>
-      </div>
-
-      <div class="route-stop">
-        <div class="route-num side">2</div>
-        <div class="route-content">
-          <div class="route-name">Kedge Bay (+ Journey's End)</div>
-          <div class="route-desc">Quick island — grab the Torn Map Piece from a sailor's remains in a small cave (no monsters). Skip Captain Hartlin (no notable reward).</div>
-          <div class="route-rewards">
-            <span class="route-reward-pill gem">Torn Map Piece #1</span>
-            <span class="route-reward-pill skip-pill">Skip Captain Hartlin</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="route-stop">
-        <div class="route-num main">3</div>
-        <div class="route-content">
-          <div class="route-name main">Whakapanu Island (+ Singing Caverns)</div>
-          <div class="route-desc">Main quest island. Defeat Diamora, Song of Death in Singing Caverns to progress the story and unlock the Shoreline Hideout. Grab the Torn Map Piece from a petrified pirate on the coast. The Beckoning Clam in Singing Caverns → Guardian of the Clam rare → drop the Humming Pearl → give to Rog for a Rare Pearlescent Amulet.</div>
-          <div class="route-rewards">
-            <span class="route-reward-pill curr">Rare Pearlescent Amulet</span>
-            <span class="route-reward-pill gem">Torn Map Piece #2</span>
-            <span class="route-reward-pill perm">Shoreline Hideout Unlock</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="route-stop">
-        <div class="route-num main">4</div>
-        <div class="route-content">
-          <div class="route-name main">Isle of Kin (+ Volcanic Warrens) ★</div>
-          <div class="route-desc">Defeat The Blind Beast in the Beast Pen arena → +2 Weapon Set Passive Skill Points (permanent). Then push into Volcanic Warrens and defeat Krutog, Lord of Kin — mandatory to unlock Eye of Hinekora (the stat goldmine island).</div>
-          <div class="route-rewards">
-            <span class="route-reward-pill perm">+2 Weapon Set Passives</span>
-            <span class="route-reward-pill gem">Torn Map Piece #3</span>
-            <span class="route-reward-pill perm">Unlocks Eye of Hinekora</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="route-stop">
-        <div class="route-num main">5</div>
-        <div class="route-content">
-          <div class="route-name main">Eye of Hinekora (+ Halls of the Dead) ★★</div>
-          <div class="route-desc">The single most stat-dense stop in Act 4. Talk to Navali for +5% Max Mana. Complete the Trial of Ancestors — defeat Yama the White for +2 Weapon Set Passives. Complete all 3 Ancestral Totem challenges for permanent attribute/resistance choices.</div>
-          <div class="route-rewards">
-            <span class="route-reward-pill perm">+5% Max Mana</span>
-            <span class="route-reward-pill perm">+2 Weapon Set Passives</span>
-            <span class="route-reward-pill perm">3× Stat/Res Choices</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="route-stop">
-        <div class="route-num side">6</div>
-        <div class="route-content">
-          <div class="route-name">Ngakanu — First Visit</div>
-          <div class="route-desc">Turn in the Shark Fin (from Great White One / Tribal Medicine quest) here before moving on. You'll return later for the final main quest boss.</div>
-          <div class="route-rewards">
-            <span class="route-reward-pill curr">Quest Turn-In</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="route-stop">
-        <div class="route-num main">7</div>
-        <div class="route-content">
-          <div class="route-name main">Shrike Island</div>
-          <div class="route-desc">Main quest island. Defeat Scourge of the Skies to progress the main quest. Grab the Torn Map Piece from a Corpse Nest near a checkpoint.</div>
-          <div class="route-rewards">
-            <span class="route-reward-pill gem">Torn Map Piece #4</span>
-            <span class="route-reward-pill curr">Main Quest Advance</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="route-stop">
-        <div class="route-num main">8</div>
-        <div class="route-content">
-          <div class="route-name main">Abandoned Prison (+ Solitary Confinement) ★</div>
-          <div class="route-desc">Main quest island. Find the Necromancer in a locked cell — they drop a Chapel Key. Locate the Chapel, defeat Forael the Soulkeeper rare, and interact with the Goddess of Justice statue for your flask buff choice. Defeat The Prisoner boss in Solitary Confinement to advance.</div>
-          <div class="route-rewards">
-            <span class="route-reward-pill perm">30% Life OR Mana Flask Recovery</span>
-            <span class="route-reward-pill skip-pill">Buff is swappable later for free</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="route-stop">
-        <div class="route-num main">9</div>
-        <div class="route-content">
-          <div class="route-name main">Arastas (+ The Excavation) ★</div>
-          <div class="route-desc">Main quest island. Defeat Torvian, Hand of the Savior and Benedictus, First Herald in The Excavation. Ring the Golden Bell for currency. Morning Bell = 3 Regal Orbs, Evening Bell = 3 Exalted Orbs — take Evening Bell (Exalted) for most builds.</div>
-          <div class="route-rewards">
-            <span class="route-reward-pill curr">3x Exalted OR Regal Orbs</span>
-            <span class="route-reward-pill curr">Main Quest Advance</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="route-stop">
-        <div class="route-num main">10</div>
-        <div class="route-content">
-          <div class="route-name main">Ngakanu — Return (Heart of the Tribe)</div>
-          <div class="route-desc">Village will have changed. Defeat Tavakai, Tukohama Chieftain in Heart of the Tribe — this is the Act 4 final boss. The Mad Butcher rare monster can be bypassed; the Meeting House is just bonus loot, skip for speed.</div>
-          <div class="route-rewards">
-            <span class="route-reward-pill curr">Act 4 Complete</span>
-            <span class="route-reward-pill perm">Unlocks Interludes</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="route-stop">
-        <div class="route-num side">11</div>
-        <div class="route-content">
-          <div class="route-name">Plunder's Point (Optional — Last)</div>
-          <div class="route-desc">Turn in all 4 Torn Map Pieces to Makoru for the Forgotten Bounty quest. This unlocks a chain of Expedition caches — the more you chain, the better the loot. Do this last so you can fully utilize the chains before the league mechanic despawns.</div>
-          <div class="route-rewards">
-            <span class="route-reward-pill curr">Expedition Cache Chain</span>
-            <span class="route-reward-pill skip-pill">Optional — do last</span>
-          </div>
-        </div>
-      </div>
-
+      <div class="route-stop"><div class="route-num main">1</div><div class="route-content"><div class="route-name main">Kingsmarch — Hub Setup</div><div class="route-desc">Speak to Doryani/Alva → meet Rog and Makoru to unlock the full destination map. Get waypoint. Check vendors for Act 4 gear (level 46–52 range).</div></div></div>
+      <div class="route-stop"><div class="route-num side">2</div><div class="route-content"><div class="route-name">Kedge Bay (+ Journey's End)</div><div class="route-desc">Quick island — grab Torn Map Piece from sailor remains in a small cave (no monsters). Skip Captain Hartlin (no notable reward).</div><div class="route-rewards"><span class="rp gem">Torn Map Piece #1</span><span class="rp sk">Skip Captain Hartlin</span></div></div></div>
+      <div class="route-stop"><div class="route-num main">3</div><div class="route-content"><div class="route-name main">Whakapanu Island + Singing Caverns</div><div class="route-desc">Defeat Diamora, Song of Death (required). Beckoning Clam → Guardian of the Clam → Humming Pearl → give to Rog → Rare Pearlescent Amulet. Grab Torn Map Piece from petrified pirate on the coast.</div><div class="route-rewards"><span class="rp curr">Rare Pearlescent Amulet</span><span class="rp gem">Torn Map Piece #2</span></div></div></div>
+      <div class="route-stop"><div class="route-num main">4</div><div class="route-content"><div class="route-name main">Isle of Kin + Volcanic Warrens ★</div><div class="route-desc">Defeat Blind Beast in Beast Pen arena → +2 Weapon Set Passive Skill Points. Push into Volcanic Warrens, defeat Krutog, Lord of Kin — mandatory to unlock Eye of Hinekora.</div><div class="route-rewards"><span class="rp perm">+2 Weapon Set Passives</span><span class="rp gem">Torn Map Piece #3</span><span class="rp perm">Unlocks Eye of Hinekora</span></div></div></div>
+      <div class="route-stop"><div class="route-num main">5</div><div class="route-content"><div class="route-name main">Eye of Hinekora + Halls of the Dead ★★</div><div class="route-desc">The stat goldmine of Act 4. Talk to Navali for +5% Max Mana. Defeat Yama the White for +2 Weapon Set Passives. Complete 3 Ancestral Totem challenges for permanent attribute/resistance choices.</div><div class="route-rewards"><span class="rp perm">+5% Max Mana</span><span class="rp perm">+2 Weapon Set Passives</span><span class="rp perm">3× Stat/Res Choices</span></div></div></div>
+      <div class="route-stop"><div class="route-num side">6</div><div class="route-content"><div class="route-name">Ngakanu — First Visit</div><div class="route-desc">Turn in the Shark Fin (from Great White One / Tribal Medicine quest) here. You'll return later for the Act 4 final boss.</div><div class="route-rewards"><span class="rp curr">Quest Turn-In</span></div></div></div>
+      <div class="route-stop"><div class="route-num main">7</div><div class="route-content"><div class="route-name main">Shrike Island</div><div class="route-desc">Main quest island. Defeat Scourge of the Skies. Grab Torn Map Piece from Corpse Nest near a checkpoint.</div><div class="route-rewards"><span class="rp gem">Torn Map Piece #4</span><span class="rp curr">Main Quest Advance</span></div></div></div>
+      <div class="route-stop"><div class="route-num main">8</div><div class="route-content"><div class="route-name main">Abandoned Prison + Solitary Confinement ★</div><div class="route-desc">Find Necromancer in locked cell → Chapel Key → find Chapel → defeat Forael the Soulkeeper → interact with Goddess of Justice statue for flask buff. Defeat The Prisoner to advance.</div><div class="route-rewards"><span class="rp perm">30% Life OR Mana Flask Recovery</span><span class="rp sk">Swappable for free anytime</span></div></div></div>
+      <div class="route-stop"><div class="route-num main">9</div><div class="route-content"><div class="route-name main">Arastas + The Excavation ★</div><div class="route-desc">Defeat Torvian, Hand of the Savior and Benedictus, First Herald (both required). Ring the Golden Bell — Morning Bell = 3 Regal Orbs, Evening Bell = 3 Exalted Orbs. Take Evening Bell for most builds.</div><div class="route-rewards"><span class="rp curr">3x Exalted OR Regal Orbs</span></div></div></div>
+      <div class="route-stop"><div class="route-num main">10</div><div class="route-content"><div class="route-name main">Ngakanu — Return (Act 4 Final Boss)</div><div class="route-desc">Defeat Tavakai, Tukohama Chieftain in Heart of the Tribe. The Mad Butcher rare can be bypassed. Meeting House = bonus loot only, skip for speed. Return to Kingsmarch → speak to final NPC → unlocks Interludes.</div><div class="route-rewards"><span class="rp curr">Act 4 Complete</span><span class="rp perm">Unlocks Interludes</span></div></div></div>
+      <div class="route-stop"><div class="route-num side">11</div><div class="route-content"><div class="route-name">Plunder's Point (Optional — Do Last)</div><div class="route-desc">Hand all 4 Torn Map Pieces to Makoru → Expedition caches. Do this last so you can chain the caches fully before the league mechanic despawns.</div><div class="route-rewards"><span class="rp curr">Expedition Cache Chain</span><span class="rp sk">Optional</span></div></div></div>
     </div>
   </div>
-
-  <!-- Eye of Hinekora Detail -->
-  <div class="callout loot">
-    <div class="callout-icon">💎</div>
-    <div class="callout-content">
-      <div class="callout-label">Eye of Hinekora — Stat Choices (Permanent, Irreversible)</div>
-      Choose carefully — these cannot be respecced. For most builds: take Fire/Cold/Lightning resistance to fill your cap. Take attribute points (+5 Str/Dex/Int) only if you're struggling to meet gem requirements.<br><br>
-      <strong>Tukohama's Test:</strong> +5 Dex OR +5% Lightning Res<br>
-      <strong>Tasalio's Test:</strong> +5 Int OR +5% Cold Res<br>
-      <strong>Ngamahu's Test:</strong> +5 Str OR +5% Fire Res<br>
-      <strong>Navali's Rest:</strong> +5% Maximum Mana (automatic, no choice needed)
-    </div>
-  </div>
-
-  <!-- Act 4 Zone Checkboxes -->
-  <div class="zone-list" style="margin-top:24px;">
-
-    <div class="zone-item" id="z-a4-kingsmarch">
-      <div class="zone-top">
-        <input type="checkbox" class="zone-checkbox" data-id="a4-kingsmarch" onclick="toggleCheck(event,'a4-kingsmarch')">
-        <span class="zone-name">Kingsmarch — Hub + Vendor Check</span>
-        <div class="zone-tags"><span class="tag wp">Waypoint</span><span class="tag req">Hub</span></div>
-        <button class="zone-expand-btn" onclick="toggleExpand(event,'z-a4-kingsmarch')">▶</button>
-      </div>
-      <div class="zone-body"><ul><li>Speak to Rog and Makoru to unlock island map. Check vendors for gear upgrades.</li></ul></div>
-    </div>
-
-    <div class="zone-item" id="z-a4-kedge">
-      <div class="zone-top">
-        <input type="checkbox" class="zone-checkbox" data-id="a4-kedge" onclick="toggleCheck(event,'a4-kedge')">
-        <span class="zone-name">Kedge Bay — Torn Map Piece</span>
-        <div class="zone-tags"><span class="tag opt">Optional</span><span class="tag loot">Map Piece</span></div>
-        <button class="zone-expand-btn" onclick="toggleExpand(event,'z-a4-kedge')">▶</button>
-      </div>
-      <div class="zone-body"><ul><li>Cave with no monsters near north edge — Torn Map Piece #1 on sailor remains. Skip Captain Hartlin.</li></ul></div>
-    </div>
-
-    <div class="zone-item" id="z-a4-whakapanu">
-      <div class="zone-top">
-        <input type="checkbox" class="zone-checkbox" data-id="a4-whakapanu" onclick="toggleCheck(event,'a4-whakapanu')">
-        <span class="zone-name">Whakapanu Island + Singing Caverns</span>
-        <div class="zone-tags"><span class="tag req">Main Quest</span><span class="tag loot">Pearlescent Amulet</span></div>
-        <button class="zone-expand-btn" onclick="toggleExpand(event,'z-a4-whakapanu')">▶</button>
-      </div>
-      <div class="zone-body"><ul><li>Defeat Diamora, Song of Death (required). Interact with Beckoning Clam → give Humming Pearl to Rog → Rare Pearlescent Amulet. Grab Torn Map Piece #2 on the coast.</li><li>Dread Crab cave near waypoint — Uncut Support Gem L4. Worth grabbing if you pass the cave entrance.</li></ul></div>
-    </div>
-
-    <div class="zone-item" id="z-a4-kin">
-      <div class="zone-top">
-        <input type="checkbox" class="zone-checkbox" data-id="a4-kin" onclick="toggleCheck(event,'a4-kin')">
-        <span class="zone-name">Isle of Kin + Volcanic Warrens ★</span>
-        <div class="zone-tags"><span class="tag loot">+2 Weapon Passives</span><span class="tag req">Unlocks Hinekora</span></div>
-        <button class="zone-expand-btn" onclick="toggleExpand(event,'z-a4-kin')">▶</button>
-      </div>
-      <div class="zone-body"><ul><li>Defeat Blind Beast in Beast Pen arena → <em>+2 Weapon Set Passive Skill Points</em>. Pick up Torn Map Piece #3 near shores (Flayed Sailor).</li><li>Push into Volcanic Warrens, defeat Krutog, Lord of Kin → unlocks Eye of Hinekora. Magma Twins rare monsters in here — skip unless they're directly in your path.</li></ul></div>
-    </div>
-
-    <div class="zone-item" id="z-a4-hinekora">
-      <div class="zone-top">
-        <input type="checkbox" class="zone-checkbox" data-id="a4-hinekora" onclick="toggleCheck(event,'a4-hinekora')">
-        <span class="zone-name">Eye of Hinekora + Halls of the Dead ★★</span>
-        <div class="zone-tags"><span class="tag loot">+2 Passives</span><span class="tag loot">3× Stat Choice</span><span class="tag loot">+5% Max Mana</span></div>
-        <button class="zone-expand-btn" onclick="toggleExpand(event,'z-a4-hinekora')">▶</button>
-      </div>
-      <div class="zone-body">
-        <ul>
-          <li>Talk to <strong>Navali</strong> → <em>+5% Max Mana (automatic)</em>.</li>
-          <li>Complete Trial of Ancestors. Defeat <strong>Yama the White</strong> → speak to Hinekora → <em>+2 Weapon Set Passive Skill Points</em>.</li>
-          <li>Complete all 3 Totem challenges for permanent stat/resistance boosts (see callout above for choices).</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="zone-item" id="z-a4-shrike">
-      <div class="zone-top">
-        <input type="checkbox" class="zone-checkbox" data-id="a4-shrike" onclick="toggleCheck(event,'a4-shrike')">
-        <span class="zone-name">Shrike Island</span>
-        <div class="zone-tags"><span class="tag req">Main Quest</span><span class="tag loot">Map Piece</span></div>
-        <button class="zone-expand-btn" onclick="toggleExpand(event,'z-a4-shrike')">▶</button>
-      </div>
-      <div class="zone-body"><ul><li>Defeat Scourge of the Skies (required for main quest). Torn Map Piece #4 inside a hollow next to a checkpoint on a Corpse Nest.</li></ul></div>
-    </div>
-
-    <div class="zone-item" id="z-a4-prison">
-      <div class="zone-top">
-        <input type="checkbox" class="zone-checkbox" data-id="a4-prison" onclick="toggleCheck(event,'a4-prison')">
-        <span class="zone-name">Abandoned Prison + Solitary Confinement ★</span>
-        <div class="zone-tags"><span class="tag req">Main Quest</span><span class="tag loot">30% Flask Recovery</span></div>
-        <button class="zone-expand-btn" onclick="toggleExpand(event,'z-a4-prison')">▶</button>
-      </div>
-      <div class="zone-body"><ul><li>Find Necromancer in a locked cell → get Chapel Key → find Chapel → defeat Forael the Soulkeeper rare → interact with <em>Goddess of Justice</em> statue → choose <em>30% Life Flask Recovery</em> or <em>30% Mana Flask Recovery</em>.</li><li><em>This buff is swappable for free at any time</em> — sail back here whenever you want to change it.</li><li>Defeat <strong>The Prisoner</strong> in Solitary Confinement (required) to advance main quest. Water slows movement in this zone — watch your positioning during the fight.</li></ul></div>
-    </div>
-
-    <div class="zone-item" id="z-a4-arastas">
-      <div class="zone-top">
-        <input type="checkbox" class="zone-checkbox" data-id="a4-arastas" onclick="toggleCheck(event,'a4-arastas')">
-        <span class="zone-name">Arastas + The Excavation ★</span>
-        <div class="zone-tags"><span class="tag req">Main Quest</span><span class="tag loot">3× Exalted Orbs</span></div>
-        <button class="zone-expand-btn" onclick="toggleExpand(event,'z-a4-arastas')">▶</button>
-      </div>
-      <div class="zone-body"><ul><li>Defeat <strong>Torvian, Hand of the Savior</strong> and <strong>Benedictus, First Herald</strong> in The Excavation (both required).</li><li>Ring the Golden Bell: <em>Morning Bell = 3 Regal Orbs</em> / <em>Evening Bell = 3 Exalted Orbs</em>. Take Evening Bell (Exalted) unless you're running a specific crafting strategy that needs Regal.</li></ul></div>
-    </div>
-
-    <div class="zone-item" id="z-a4-ngakanu">
-      <div class="zone-top">
-        <input type="checkbox" class="zone-checkbox" data-id="a4-ngakanu" onclick="toggleCheck(event,'a4-ngakanu')">
-        <span class="zone-name">Ngakanu — Return (Final Act 4 Boss)</span>
-        <div class="zone-tags"><span class="tag req">Act 4 Final</span><span class="tag boss">Act Boss</span></div>
-        <button class="zone-expand-btn" onclick="toggleExpand(event,'z-a4-ngakanu')">▶</button>
-      </div>
-      <div class="zone-body">
-        <div class="boss-card">
-          <div class="boss-title">Tavakai, Tukohama Chieftain — Act 4 Final Boss</div>
-          <div class="boss-tip">Located in Heart of the Tribe. AoE-heavy boss. Watch ground carefully and stay mobile. After defeating Tavakai, return to Kingsmarch, speak to the final NPC about rallying allies — this completes The Search and unlocks the three Interludes.</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="zone-item" id="z-a4-plunder">
-      <div class="zone-top">
-        <input type="checkbox" class="zone-checkbox" data-id="a4-plunder" onclick="toggleCheck(event,'a4-plunder')">
-        <span class="zone-name">Plunder's Point — Forgotten Bounty (Optional)</span>
-        <div class="zone-tags"><span class="tag opt">Optional</span><span class="tag loot">Expedition Caches</span></div>
-        <button class="zone-expand-btn" onclick="toggleExpand(event,'z-a4-plunder')">▶</button>
-      </div>
-      <div class="zone-body"><ul><li>Hand all 4 Torn Map Pieces to Makoru → unlocks Plunder's Point expedition.</li><li>Chain expedition caches — the longer the chain, the better the loot. Do this last so you can fully utilize the chains before the league mechanic despawns from the map.</li></ul></div>
-    </div>
-
+  <div class="callout loot"><div class="c-icon">💎</div><div><div class="c-label">Eye of Hinekora — Stat Choices (Irreversible)</div><strong>Tukohama's Test:</strong> +5 Dex OR +5% Lightning Res — <strong>Tasalio's Test:</strong> +5 Int OR +5% Cold Res — <strong>Ngamahu's Test:</strong> +5 Str OR +5% Fire Res<br>Pick resistances if you need cap, attributes if you're struggling with gem requirements. Navali's Rest (+5% Max Mana) is automatic.</div></div>
+  <div class="zone-list" style="margin-top:20px">
+    <div class="zone-item" id="zi-a4-kings"><div class="zone-top"><input type="checkbox" class="zone-checkbox" data-id="a4-kings" onclick="chk(event,'a4-kings')"><span class="zone-name">Kingsmarch — Hub + Vendor Check</span><div class="zone-tags"><span class="tag wp">Waypoint</span><span class="tag req">Hub</span></div><button class="zone-expand-btn" onclick="exp(event,'zi-a4-kings')">▶</button></div><div class="zone-body"><ul><li>Speak to Rog and Makoru to unlock island map. Check vendors for gear upgrades.</li></ul></div></div>
+    <div class="zone-item" id="zi-a4-kedge"><div class="zone-top"><input type="checkbox" class="zone-checkbox" data-id="a4-kedge" onclick="chk(event,'a4-kedge')"><span class="zone-name">Kedge Bay — Torn Map Piece</span><div class="zone-tags"><span class="tag opt">Optional</span><span class="tag loot">Map Piece</span></div><button class="zone-expand-btn" onclick="exp(event,'zi-a4-kedge')">▶</button></div><div class="zone-body"><ul><li>Cave north edge — Torn Map Piece #1 on sailor remains. Skip Captain Hartlin.</li></ul></div></div>
+    <div class="zone-item" id="zi-a4-whak"><div class="zone-top"><input type="checkbox" class="zone-checkbox" data-id="a4-whak" onclick="chk(event,'a4-whak')"><span class="zone-name">Whakapanu Island + Singing Caverns</span><div class="zone-tags"><span class="tag req">Main Quest</span><span class="tag loot">Pearlescent Amulet</span></div><button class="zone-expand-btn" onclick="exp(event,'zi-a4-whak')">▶</button></div><div class="zone-body"><ul><li>Defeat Diamora, Song of Death (required). Beckoning Clam → give Humming Pearl to Rog → Rare Pearlescent Amulet. Torn Map Piece #2 on the coast.</li><li>Dread Crab cave near waypoint — Uncut Support Gem L4. Grab if you pass the cave.</li></ul></div></div>
+    <div class="zone-item" id="zi-a4-kin"><div class="zone-top"><input type="checkbox" class="zone-checkbox" data-id="a4-kin" onclick="chk(event,'a4-kin')"><span class="zone-name">Isle of Kin + Volcanic Warrens ★</span><div class="zone-tags"><span class="tag loot">+2 Weapon Passives</span><span class="tag req">Unlocks Hinekora</span></div><button class="zone-expand-btn" onclick="exp(event,'zi-a4-kin')">▶</button></div><div class="zone-body"><ul><li>Defeat Blind Beast → <em>+2 Weapon Set Passive Skill Points</em>. Torn Map Piece #3 near shores (Flayed Sailor).</li><li>Push into Volcanic Warrens, defeat Krutog, Lord of Kin → unlocks Eye of Hinekora.</li></ul></div></div>
+    <div class="zone-item" id="zi-a4-hine"><div class="zone-top"><input type="checkbox" class="zone-checkbox" data-id="a4-hine" onclick="chk(event,'a4-hine')"><span class="zone-name">Eye of Hinekora + Halls of the Dead ★★</span><div class="zone-tags"><span class="tag loot">+2 Passives</span><span class="tag loot">3× Stat Choice</span><span class="tag loot">+5% Mana</span></div><button class="zone-expand-btn" onclick="exp(event,'zi-a4-hine')">▶</button></div><div class="zone-body"><ul><li>Talk to <strong>Navali</strong> → <em>+5% Max Mana (automatic)</em>.</li><li>Complete Trial of Ancestors. Defeat <strong>Yama the White</strong> → <em>+2 Weapon Set Passive Skill Points</em>.</li><li>Complete all 3 Totem challenges for permanent stat/resistance boosts.</li></ul></div></div>
+    <div class="zone-item" id="zi-a4-shrike"><div class="zone-top"><input type="checkbox" class="zone-checkbox" data-id="a4-shrike" onclick="chk(event,'a4-shrike')"><span class="zone-name">Shrike Island</span><div class="zone-tags"><span class="tag req">Main Quest</span><span class="tag loot">Map Piece</span></div><button class="zone-expand-btn" onclick="exp(event,'zi-a4-shrike')">▶</button></div><div class="zone-body"><ul><li>Defeat Scourge of the Skies (required). Torn Map Piece #4 inside a hollow next to a checkpoint on a Corpse Nest.</li></ul></div></div>
+    <div class="zone-item" id="zi-a4-prison"><div class="zone-top"><input type="checkbox" class="zone-checkbox" data-id="a4-prison" onclick="chk(event,'a4-prison')"><span class="zone-name">Abandoned Prison + Solitary Confinement ★</span><div class="zone-tags"><span class="tag req">Main Quest</span><span class="tag loot">30% Flask Recovery</span></div><button class="zone-expand-btn" onclick="exp(event,'zi-a4-prison')">▶</button></div><div class="zone-body"><ul><li>Find Necromancer in locked cell → Chapel Key → find Chapel → defeat Forael the Soulkeeper → interact with <em>Goddess of Justice</em> statue → choose <em>30% Life Flask Recovery</em> or <em>30% Mana Flask Recovery</em>.</li><li><em>This buff is swappable for free at any time</em> — return here whenever you want to change it.</li><li>Defeat <strong>The Prisoner</strong> in Solitary Confinement (required). Water slows movement — watch positioning during the fight.</li></ul></div></div>
+    <div class="zone-item" id="zi-a4-ara"><div class="zone-top"><input type="checkbox" class="zone-checkbox" data-id="a4-ara" onclick="chk(event,'a4-ara')"><span class="zone-name">Arastas + The Excavation ★</span><div class="zone-tags"><span class="tag req">Main Quest</span><span class="tag loot">3× Exalted Orbs</span></div><button class="zone-expand-btn" onclick="exp(event,'zi-a4-ara')">▶</button></div><div class="zone-body"><ul><li>Defeat <strong>Torvian, Hand of the Savior</strong> and <strong>Benedictus, First Herald</strong> in The Excavation (both required).</li><li>Ring Golden Bell: <em>Morning Bell = 3 Regal Orbs</em> / <em>Evening Bell = 3 Exalted Orbs</em>. Take Evening Bell (Exalted) for most builds.</li></ul></div></div>
+    <div class="zone-item" id="zi-a4-ngak"><div class="zone-top"><input type="checkbox" class="zone-checkbox" data-id="a4-ngak" onclick="chk(event,'a4-ngak')"><span class="zone-name">Ngakanu — Return (Act 4 Final Boss)</span><div class="zone-tags"><span class="tag req">Act 4 Final</span><span class="tag boss">Act Boss</span></div><button class="zone-expand-btn" onclick="exp(event,'zi-a4-ngak')">▶</button></div><div class="zone-body"><div class="boss-card"><div class="boss-title">Tavakai, Tukohama Chieftain</div><div class="boss-tip">Located in Heart of the Tribe. AoE-heavy. Watch ground carefully and stay mobile. After defeating Tavakai, return to Kingsmarch, speak to final NPC about rallying allies — completes The Search and unlocks Interludes.</div></div></div></div>
+    <div class="zone-item" id="zi-a4-plunder"><div class="zone-top"><input type="checkbox" class="zone-checkbox" data-id="a4-plunder" onclick="chk(event,'a4-plunder')"><span class="zone-name">Plunder's Point — Forgotten Bounty (Optional, Do Last)</span><div class="zone-tags"><span class="tag opt">Optional</span><span class="tag loot">Expedition Caches</span></div><button class="zone-expand-btn" onclick="exp(event,'zi-a4-plunder')">▶</button></div><div class="zone-body"><ul><li>Hand all 4 Torn Map Pieces to Makoru → unlocks Plunder's Point expedition.</li><li>Chain expedition caches — longer chain = better loot. Do this last before the league mechanic despawns.</li></ul></div></div>
   </div>
 </section>
-
-<!-- ═══ INTERLUDES ═══ -
+<!-- INTERLUDES -->
+<section class="sec" id="interludes">
+  <div class="eyebrow">Post-Act IV</div>
+  <div class="act-hdr"><div class="act-n" style="color:var(--blue)">~</div><div><div class="act-label">The Three Interludes</div><div class="act-name">Bridging Campaign to Endgame</div><div class="act-desc">Three mini-chapters that recruit the Vaal, Ezomytes, and Maraketh before the final push. Unlocked after Act 4.</div></div></div>
+  <div class="callout warn"><div class="c-icon">⚠️</div><div><div class="c-label">Interlude Warning</div>Do not rush these blind. Bosses — especially Lythara, the Wayward Spear (Interlude 3) — are notably harder than any Act boss. Monster density was reduced in 0.5 but boss difficulty remains high. Ensure capped resistances before each boss fight.</div></div>
+  <div class="zone-list">
+    <div class="zone-item" id="zi-int-1"><div class="zone-top"><input type="checkbox" class="zone-checkbox" data-id="int-1" onclick="chk(event,'int-1')"><span class="zone-name">Interlude 1 — Recruit the Vaal</span><div class="zone-tags"><span class="tag req">Required</span></div><button class="zone-expand-btn" onclick="exp(event,'zi-int-1')">▶</button></div><div class="zone-body"><ul><li>Travel to the Vaal region and complete the recruitment questline.</li><li>The Hunt Begins quest (if it appears) must be completed in a single instance — don't abandon it mid-run.</li><li>Focus on the main objective: recruit Vaal forces before the final push to Oriath.</li></ul></div></div>
+    <div class="zone-item" id="zi-int-2"><div class="zone-top"><input type="checkbox" class="zone-checkbox" data-id="int-2" onclick="chk(event,'int-2')"><span class="zone-name">Interlude 2 — Recruit the Ezomytes</span><div class="zone-tags"><span class="tag req">Required</span></div><button class="zone-expand-btn" onclick="exp(event,'zi-int-2')">▶</button></div><div class="zone-body"><ul><li>Navigate the Ezomyte questline and recruit their forces.</li><li>Gear check zone — verify you're not significantly under-leveled before pushing forward.</li></ul></div></div>
+    <div class="zone-item" id="zi-int-3"><div class="zone-top"><input type="checkbox" class="zone-checkbox" data-id="int-3" onclick="chk(event,'int-3')"><span class="zone-name">Interlude 3 — Recruit the Maraketh</span><div class="zone-tags"><span class="tag req">Required</span><span class="tag boss">Hard Boss</span></div><button class="zone-expand-btn" onclick="exp(event,'zi-int-3')">▶</button></div><div class="zone-body"><div class="boss-card"><div class="boss-title">Lythara, the Wayward Spear — Hardest Campaign Boss</div><div class="boss-tip">Aggressive, fast-moving spear-focused boss. Stay at max range. Read spear throw patterns before committing to dodges — Lythara chains multiple attacks. Never let Life Flask run dry entering this fight. Defeating Lythara completes the Interlude cycle and opens the <strong>Atlas Endgame</strong>.</div></div></div></div>
+  </div>
+</section>
+<!-- REWARD CHECKLIST -->
+<section class="sec" id="rewards">
+  <div class="eyebrow">Reference</div>
+  <h2 class="sec-title">Permanent Reward Checklist</h2>
+  <p class="sec-sub">Every carry-forward permanent buff and major reward. Tick each off as you collect them.</p>
+  <div class="callout loot"><div class="c-icon">💎</div><div><div class="c-label">Why These Matter</div>Skull buffs, passive point rewards, and stat boosts are permanent upgrades that carry into endgame. Unlike gear, they cannot be re-acquired on the same character. Missing Gembloom Skull alone = -30 Spirit deficit for your entire run.</div></div>
+  <table class="rtable" style="margin-top:16px">
+    <thead><tr><th style="width:26px"></th><th>Source</th><th>Reward</th><th style="width:76px">Priority</th></tr></thead>
+    <tbody>
+      <tr><td><input type="checkbox" class="rchk" data-id="r-coldres" onclick="chk(event,'r-coldres')"></td><td class="rs">Act 1 — Clearfell: Beira of the Rotten Pack</td><td class="ri g">Head of the Winter Wolf — +10% Cold Resistance (permanent)</td><td><span class="tag opt">Good</span></td></tr>
+      <tr><td><input type="checkbox" class="rchk" data-id="r-sg1" onclick="chk(event,'r-sg1')"></td><td class="rs">Act 1 — Mud Burrow: The Devourer</td><td class="ri b">Uncut Support Gem Level 1</td><td><span class="tag opt">Good</span></td></tr>
+      <tr><td><input type="checkbox" class="rchk" data-id="r-cauldron" onclick="chk(event,'r-cauldron')"></td><td class="rs">Act 1 — Areagne's Hut Cauldron (no kill needed)</td><td class="ri gr">Free Life + Mana Flask</td><td><span class="tag opt">Good</span></td></tr>
+      <tr><td><input type="checkbox" class="rchk" data-id="r-gembloom" onclick="chk(event,'r-gembloom')"></td><td class="rs">Act 1 — Freythorn: King in the Mists</td><td class="ri g">⭐ Gembloom Skull → +30 Spirit (permanent) + Uncut Spirit Gem L4</td><td><span class="tag req">Must Do</span></td></tr>
+      <tr><td><input type="checkbox" class="rchk" data-id="r-crowbell" onclick="chk(event,'r-crowbell')"></td><td class="rs">Act 1 — Hunting Grounds: The Crowbell</td><td class="ri b">+2 Weapon Set Passive Skill Points</td><td><span class="tag opt">Good</span></td></tr>
+      <tr><td><input type="checkbox" class="rchk" data-id="r-lute" onclick="chk(event,'r-lute')"></td><td class="rs">Act 1 — Ogham Farmlands: The Lost Lute</td><td class="ri b">+2 Weapon Set Passive Skill Points</td><td><span class="tag opt">Good</span></td></tr>
+      <tr><td><input type="checkbox" class="rchk" data-id="r-bsmith" onclick="chk(event,'r-bsmith')"></td><td class="rs">Act 1 — Ogham Village: Blacksmith's Chest</td><td class="ri gr">Guaranteed Artificer's Orb + Blank Rune</td><td><span class="tag req">Must Do</span></td></tr>
+      <tr><td><input type="checkbox" class="rchk" data-id="r-salvage" onclick="chk(event,'r-salvage')"></td><td class="rs">Act 1 — Finding the Forge (Renly)</td><td class="ri gr">Unlocks Salvage Bench</td><td><span class="tag opt">Good</span></td></tr>
+      <tr><td><input type="checkbox" class="rchk" data-id="r-gem5" onclick="chk(event,'r-gem5')"></td><td class="rs">Act 1 — The Executioner (speak to Leitis)</td><td class="ri g">Uncut Skill Gem Level 5</td><td><span class="tag req">Must Do</span></td></tr>
+      <tr><td><input type="checkbox" class="rchk" data-id="r-candle" onclick="chk(event,'r-candle')"></td><td class="rs">Act 1 — Oghman Manor: Candlemass</td><td class="ri g">Candlemass' Essence → +20 Maximum Life (permanent)</td><td><span class="tag req">Must Do</span></td></tr>
+      <tr><td><input type="checkbox" class="rchk" data-id="r-gemrot" onclick="chk(event,'r-gemrot')"></td><td class="rs">Act 2 — Ignaduk boss</td><td class="ri g">⭐ Gemrot Skull → +30 Spirit (permanent) + Uncut Spirit Gem L10</td><td><span class="tag req">Must Do</span></td></tr>
+      <tr><td><input type="checkbox" class="rchk" data-id="r-charm" onclick="chk(event,'r-charm')"></td><td class="rs">Act 2 — Ignaduk spear (speak to Servi)</td><td class="ri b">Magic Rarity Charm</td><td><span class="tag opt">Good</span></td></tr>
+      <tr><td><input type="checkbox" class="rchk" data-id="r-pearl" onclick="chk(event,'r-pearl')"></td><td class="rs">Act 4 — Whakapanu: Beckoning Clam → Rog</td><td class="ri gr">Rare Pearlescent Amulet</td><td><span class="tag opt">Good</span></td></tr>
+      <tr><td><input type="checkbox" class="rchk" data-id="r-kinpass" onclick="chk(event,'r-kinpass')"></td><td class="rs">Act 4 — Isle of Kin: Blind Beast</td><td class="ri g">⭐ +2 Weapon Set Passive Skill Points</td><td><span class="tag req">Must Do</span></td></tr>
+      <tr><td><input type="checkbox" class="rchk" data-id="r-mana" onclick="chk(event,'r-mana')"></td><td class="rs">Act 4 — Eye of Hinekora: Navali's Rest</td><td class="ri g">+5% Maximum Mana (permanent)</td><td><span class="tag req">Must Do</span></td></tr>
+      <tr><td><input type="checkbox" class="rchk" data-id="r-yama" onclick="chk(event,'r-yama')"></td><td class="rs">Act 4 — Halls of the Dead: Yama the White</td><td class="ri g">⭐ +2 Weapon Set Passive Skill Points</td><td><span class="tag req">Must Do</span></td></tr>
+      <tr><td><input type="checkbox" class="rchk" data-id="r-totems" onclick="chk(event,'r-totems')"></td><td class="rs">Act 4 — Halls of the Dead: 3 Ancestral Totems</td><td class="ri g">⭐ 3× Permanent Stat/Resistance Choice (irreversible)</td><td><span class="tag req">Must Do</span></td></tr>
+      <tr><td><input type="checkbox" class="rchk" data-id="r-flask" onclick="chk(event,'r-flask')"></td><td class="rs">Act 4 — Abandoned Prison: Goddess of Justice</td><td class="ri g">30% Life OR Mana Flask Recovery (swappable)</td><td><span class="tag req">Must Do</span></td></tr>
+      <tr><td><input type="checkbox" class="rchk" data-id="r-bell" onclick="chk(event,'r-bell')"></td><td class="rs">Act 4 — Arastas: Golden Bell</td><td class="ri gr">3× Exalted Orbs (Evening) OR 3× Regal Orbs (Morning)</td><td><span class="tag req">Must Do</span></td></tr>
+    </tbody>
+  </table>
+  <div class="callout info" style="margin-top:20px"><div class="c-icon">🗺️</div><div><div class="c-label">After the Interludes — Atlas Endgame</div>Completing all three Interludes opens the Atlas of Worlds. In patch 0.5, the Atlas has been completely reworked with 5 new storylines, 15 new bosses, and the new Runes of Aldur league mechanic. Your Ascendancy, passive tree, and all permanent campaign buffs carry forward.</div></div>
+</section>
+</main>
+</div>
+<script>
+var S={};
+function loadState(){try{var h=window.location.hash.slice(1);if(h)S=JSON.parse(decodeURIComponent(h));}catch(e){S={}}applyState();}
+function saveState(){try{window.location.hash=encodeURIComponent(JSON.stringify(S));}catch(e){}}
+function applyState(){document.querySelectorAll('[data-id]').forEach(function(el){var id=el.dataset.id;if(S[id]){el.checked=true;var zi=el.closest('.zone-item');if(zi)zi.classList.add('checked');}});updateProgress();}
+function chk(e,id){e.stopPropagation();var el=e.target;S[id]=el.checked;var zi=el.closest('.zone-item');if(zi)zi.classList.toggle('checked',el.checked);saveState();updateProgress();}
+function exp(e,id){e.stopPropagation();var el=document.getElementById(id);if(el)el.classList.toggle('expanded');}
+function updateProgress(){var all=document.querySelectorAll('[data-id]');var total=all.length;var done=[].filter.call(all,function(el){return el.checked;}).length;var pct=total>0?(done/total*100):0;document.getElementById('prog-txt').textContent=done+' / '+total;document.getElementById('prog-bar').style.width=pct+'%';['act1','act2','act3','act4','interludes'].forEach(function(sec){var s=document.getElementById(sec);if(!s)return;var sc=s.querySelectorAll('[data-id]');var sd=[].filter.call(sc,function(el){return el.checked;}).length;var nc=document.getElementById('nc-'+sec);if(nc)nc.textContent=sd+'/'+sc.length;});}
+function navTo(id){var el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});document.querySelectorAll('.nav-a').forEach(function(a){a.classList.remove('active');});var btns=document.querySelectorAll('.nav-a');btns.forEach(function(b){if(b.getAttribute('onclick')&&b.getAttribute('onclick').indexOf("'"+id+"'")>-1)b.classList.add('active');});}
+function resetAll(){if(!confirm('Reset all progress?'))return;S={};document.querySelectorAll('[data-id]').forEach(function(el){el.checked=false;var zi=el.closest('.zone-item');if(zi)zi.classList.remove('checked');});window.location.hash='';updateProgress();}
+var obs=new IntersectionObserver(function(entries){entries.forEach(function(entry){if(entry.isIntersecting){var id=entry.target.id;document.querySelectorAll('.nav-a').forEach(function(b){var oc=b.getAttribute('onclick')||'';b.classList.toggle('active',oc.indexOf("'"+id+"'")>-1);});}});},{threshold:0.15});
+document.querySelectorAll('.sec').forEach(function(s){obs.observe(s);});
+loadState();
+</script>
+</body>
+</html>
