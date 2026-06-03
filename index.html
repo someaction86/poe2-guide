@@ -14,6 +14,7 @@
   --blue:#4a9eff;--bluedim:rgba(74,158,255,0.1);
   --green:#3dba6e;--greendim:rgba(61,186,110,0.1);
   --purple:#9b6fd4;--purpledim:rgba(155,111,212,0.1);
+  --teal:#3dcfb8;--tealdim:rgba(61,207,184,0.1);
   --text:#c2bdb4;--textdim:#63605a;--textmuted:#3a3830;
   --r:8px;--sans:'Inter',system-ui,sans-serif;--mono:'JetBrains Mono',monospace;
 }
@@ -169,6 +170,82 @@ main{overflow:hidden}
 ::-webkit-scrollbar-thumb:hover{background:var(--golddim)}
 /* mobile */
 @media(max-width:780px){.layout{grid-template-columns:1fr}.sidebar{position:static;height:auto;border-right:none;border-bottom:1px solid var(--border)}.hero,.sec{padding:28px 20px 22px}}
+
+/* ── CRAFTING GUIDE STYLES ── */
+.craft-divider{text-align:center;padding:52px 44px 0;border-top:2px solid rgba(212,168,71,0.2);background:linear-gradient(180deg,rgba(212,168,71,0.04) 0%,transparent 100%)}
+.craft-divider-label{font-family:var(--mono);font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);display:inline-flex;align-items:center;gap:12px}
+.craft-divider-label::before,.craft-divider-label::after{content:'';width:48px;height:1px;background:var(--golddim)}
+.c-body{font-size:.85rem;color:var(--textdim);font-weight:300;line-height:1.6}
+.c-body strong{color:var(--text);font-weight:600}
+.callout.new{background:var(--tealdim);border:1px solid rgba(61,207,184,0.22)}
+.callout.new .c-label{color:var(--teal)}
+.callout.danger{background:var(--reddim);border:1px solid rgba(212,64,64,0.22)}
+.callout.danger .c-label{color:var(--red)}
+.callout.loot{background:var(--purpledim);border:1px solid rgba(155,111,212,0.2)}
+.callout.loot .c-label{color:var(--purple)}
+.currency-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;margin:16px 0}
+.cur-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:16px;transition:border-color .15s;position:relative;overflow:hidden}
+.cur-card:hover{border-color:var(--border2)}
+.cur-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.cur-card.common::before{background:linear-gradient(90deg,transparent,rgba(255,255,255,0.12),transparent)}
+.cur-card.magic::before{background:linear-gradient(90deg,transparent,var(--blue),transparent)}
+.cur-card.rare::before{background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.cur-card.divine::before{background:linear-gradient(90deg,transparent,var(--amber),transparent)}
+.cur-card.special::before{background:linear-gradient(90deg,transparent,var(--purple),transparent)}
+.cur-card.cnew::before{background:linear-gradient(90deg,transparent,var(--teal),transparent)}
+.cur-header{display:flex;align-items:flex-start;gap:10px;margin-bottom:8px}
+.cur-icon{width:36px;height:36px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.cur-icon.c-white{background:rgba(255,255,255,0.06)}
+.cur-icon.c-blue{background:var(--bluedim)}
+.cur-icon.c-gold{background:var(--goldglow)}
+.cur-icon.c-amber{background:rgba(232,146,58,0.1)}
+.cur-icon.c-purple{background:var(--purpledim)}
+.cur-icon.c-teal{background:var(--tealdim)}
+.cur-icon.c-red{background:var(--reddim)}
+.cur-icon.c-green{background:var(--greendim)}
+.cur-name{font-size:.82rem;font-weight:700;color:var(--text);line-height:1.2}
+.cur-tier{font-family:var(--mono);font-size:.58rem;color:var(--textdim);margin-top:2px}
+.cur-desc{font-size:.8rem;color:var(--textdim);font-weight:300;line-height:1.55;margin-bottom:8px}
+.cur-tags{display:flex;flex-wrap:wrap;gap:4px}
+.tag.spend{background:var(--reddim);color:#e07070;border:1px solid rgba(212,64,64,0.22)}
+.tag.save{background:var(--greendim);color:#7adaa0;border:1px solid rgba(61,186,110,0.18)}
+.tag.new-tag{background:var(--tealdim);color:#6de8d8;border:1px solid rgba(61,207,184,0.22)}
+.tag.removed{background:rgba(255,255,255,0.04);color:var(--textmuted);border:1px solid var(--border);text-decoration:line-through}
+.tag.rare-tag{background:var(--goldglow);color:var(--gold);border:1px solid rgba(212,168,71,0.22)}
+.tag.det{background:var(--bluedim);color:#7ab8ff;border:1px solid rgba(74,158,255,0.18)}
+.rune-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(256px,1fr));gap:10px;margin:16px 0}
+.rune-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:14px;transition:border-color .15s}
+.rune-card:hover{border-color:var(--border2)}
+.rune-name{font-size:.82rem;font-weight:700;color:var(--text);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.rune-name .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.rune-stat{font-family:var(--mono);font-size:.72rem;color:var(--gold);margin-bottom:4px}
+.rune-detail{font-size:.78rem;color:var(--textdim);font-weight:300;line-height:1.5}
+.workflow{display:flex;flex-direction:column;gap:0;position:relative;margin:16px 0}
+.workflow::before{content:'';position:absolute;left:19px;top:20px;bottom:20px;width:1px;background:linear-gradient(to bottom,var(--gold),rgba(212,168,71,0.1))}
+.wf-step{display:flex;gap:14px;align-items:flex-start;padding:10px 0}
+.wf-num{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.72rem;font-weight:700;flex-shrink:0;z-index:1;border:2px solid var(--gold);color:var(--gold);background:rgba(212,168,71,0.08)}
+.wf-num.alt{border-color:var(--teal);color:var(--teal);background:var(--tealdim)}
+.wf-num.danger{border-color:var(--red);color:var(--red);background:var(--reddim)}
+.wf-content{flex:1;padding-top:7px}
+.wf-title{font-size:.88rem;font-weight:700;color:var(--text);margin-bottom:3px}
+.wf-title .wlabel{font-family:var(--mono);font-size:.62rem;font-weight:500;color:var(--textdim);margin-left:7px}
+.wf-body{font-size:.8rem;color:var(--textdim);font-weight:300;line-height:1.55}
+.wf-body strong{color:var(--text);font-weight:600}
+.wf-body em{color:var(--gold);font-style:normal}
+.btable{width:100%;border-collapse:collapse;font-size:.82rem}
+.btable th{font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--textmuted);text-align:left;padding:8px 12px;border-bottom:1px solid var(--border);background:var(--surface)}
+.btable td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-weight:300;line-height:1.5}
+.btable tr:hover td{background:rgba(255,255,255,0.015)}
+.btable tr:last-child td{border-bottom:none}
+.btable td.bname{color:var(--text);font-weight:600;white-space:nowrap}
+.btable td.bval{font-family:var(--mono);font-size:.75rem;color:var(--gold)}
+.btable td.bnote{color:var(--textdim);font-size:.78rem}
+.btable td.bred{color:#e07070}
+.btable td.bblue{color:#7ab8ff}
+.btable td.bgreen{color:#7adaa0}
+.btable td.bpurple{color:#c49de8}
+.btable td.bteal{color:#6de8d8}
+.sec-divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:28px 0}
 </style>
 </head>
 <body>
@@ -200,6 +277,27 @@ main{overflow:hidden}
       <div class="nav-group-label">Reference</div>
       <button class="nav-a" onclick="navTo('rewards')"><span class="nav-dot"></span>Reward Checklist</button>
     </div>
+      <div class="nav-group">
+        <div class="nav-group-label">Crafting</div>
+        <button class="nav-a" onclick="navTo('crafting-intro')"><span class="nav-dot"></span>Item Anatomy</button>
+        <button class="nav-a" onclick="navTo('currency')"><span class="nav-dot"></span>Currency Index</button>
+        <button class="nav-a" onclick="navTo('runes')"><span class="nav-dot"></span>Runes & Socketables</button>
+        <button class="nav-a" onclick="navTo('essences')"><span class="nav-dot"></span>Essences & Omens</button>
+        <button class="nav-a" onclick="navTo('fracturing')"><span class="nav-dot"></span>Fracturing Orbs</button>
+        <button class="nav-a" onclick="navTo('corruption')"><span class="nav-dot"></span>Corruption & Vaal</button>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label">0.5 New Systems</div>
+        <button class="nav-a" onclick="navTo('verisium')"><span class="nav-dot"></span>Verisium Runeforging</button>
+        <button class="nav-a" onclick="navTo('genesis')"><span class="nav-dot"></span>Genesis Tree</button>
+        <button class="nav-a" onclick="navTo('aldurs-legacy')"><span class="nav-dot"></span>Aldur's Legacy Rune</button>
+      </div>
+      <div class="nav-group">
+        <div class="nav-group-label">Craft Strategy</div>
+        <button class="nav-a" onclick="navTo('workflow')"><span class="nav-dot"></span>Crafting Workflows</button>
+        <button class="nav-a" onclick="navTo('campaign-crafting')"><span class="nav-dot"></span>Campaign Priorities</button>
+        <button class="nav-a" onclick="navTo('mistakes')"><span class="nav-dot"></span>Common Mistakes</button>
+      </div>
   </nav>
   <div class="sb-foot"><button class="reset-btn" onclick="resetAll()">Reset All Progress</button></div>
 </aside>
@@ -353,6 +451,524 @@ main{overflow:hidden}
   </table>
   <div class="callout info" style="margin-top:20px"><div class="c-icon">🗺️</div><div><div class="c-label">After the Interludes — Atlas Endgame</div>Completing all three Interludes opens the Atlas of Worlds. In patch 0.5, the Atlas has been completely reworked with 5 new storylines, 15 new bosses, and the new Runes of Aldur league mechanic. Your Ascendancy, passive tree, and all permanent campaign buffs carry forward.</div></div>
 </section>
+
+<!-- ═══ CRAFTING GUIDE DIVIDER ═══ -->
+<div class="craft-divider sec" id="crafting-intro" style="padding-top:52px">
+  <div class="craft-divider-label">Crafting Guide</div>
+  <div style="padding:44px 0 0">
+    <div class="eyebrow">Foundation</div>
+    <h2 class="sec-title">Item Anatomy</h2>
+    <p class="sec-sub">Understanding what an item is before you craft it. Every expensive mistake traces back to skipping this section.</p>
+
+    <div class="callout new">
+      <div class="c-icon">🆕</div>
+      <div><div class="c-label">0.5 Critical Change — One Crafted Modifier Limit</div>
+      <div class="c-body">Items can now only have <strong>1 crafted modifier</strong> and <strong>1 desecrated modifier</strong> at a time. Essences, Perfect Essences, and Imbued Alloys all share this single crafted slot. <strong>Chained-essence crafting is no longer possible.</strong> Plan your crafts around one guaranteed mod and slam the rest.</div></div>
+    </div>
+
+    <div class="currency-grid">
+      <div class="cur-card common">
+        <div class="cur-header"><div class="cur-icon c-white">🏷️</div><div><div class="cur-name">Rarity Ladder</div><div class="cur-tier">Normal → Unique</div></div></div>
+        <div class="cur-desc"><strong style="color:#ccc">Normal (White)</strong> — 0 mods<br><strong style="color:#7ab8ff">Magic (Blue)</strong> — up to 1 prefix + 1 suffix<br><strong style="color:#f0c060">Rare (Yellow)</strong> — up to 3 prefixes + 3 suffixes<br><strong style="color:#e07070">Unique (Orange)</strong> — fixed mod pool<br><strong style="color:#c49de8">Fractured</strong> — 1 mod permanently locked<br><strong style="color:var(--gold)">Corrupted</strong> — no further changes allowed</div>
+      </div>
+      <div class="cur-card common">
+        <div class="cur-header"><div class="cur-icon c-white">⚖️</div><div><div class="cur-name">Prefixes vs Suffixes</div><div class="cur-tier">3 + 3 on Rare items</div></div></div>
+        <div class="cur-desc">Both sides are independent — a slam targeting prefixes never touches suffixes.<br><br><strong style="color:#ccc">Prefixes (rough rule):</strong> flat damage, % damage, +gem levels, life, energy shield, mana.<br><strong style="color:#ccc">Suffixes (rough rule):</strong> resistances, attributes, attack/cast speed, crit chance, recovery. Always verify on PoE2DB before expensive crafts.</div>
+      </div>
+      <div class="cur-card common">
+        <div class="cur-header"><div class="cur-icon c-white">📊</div><div><div class="cur-name">Item Level & Tier Gates</div><div class="cur-tier">ilvl 80–82 for T1 mods</div></div></div>
+        <div class="cur-desc">Every modifier has a minimum item level. T1 mods almost always require <strong style="color:var(--gold)">ilvl 80+</strong>. Buy bases at <strong style="color:var(--gold)">ilvl 81–82</strong> — the cheapest bases that can still roll T1 on the mods you care about.<br><br>Greater orbs guarantee modifier level ≥44. Perfect orbs guarantee modifier level ≥70.</div>
+      </div>
+      <div class="cur-card common">
+        <div class="cur-header"><div class="cur-icon c-white">🔤</div><div><div class="cur-name">The Tag System</div><div class="cur-tier">Governs modifier eligibility</div></div></div>
+        <div class="cur-desc">Every modifier belongs to a <strong style="color:#ccc">modifier group</strong> — only one modifier per group can be on an item at a time. This is why Essence crafts sometimes fail: a mod from the same group is already present.<br><br>Pure Strength bases roll Armour mods only. Str/Int hybrids can roll both Armour and Energy Shield. Know your base's tags before you start.</div>
+      </div>
+    </div>
+
+    <div class="callout tip">
+      <div class="c-icon">💡</div>
+      <div><div class="c-label">Base Selection Rule</div>
+      <div class="c-body">Always choose your base <em style="color:var(--gold)">by its modifier pool first, then item level</em>. An ilvl 82 base with the wrong attribute type will never roll the mods you need regardless of currency spent. Hybrid bases (Str/Int, Str/Dex, Dex/Int) give wider mod access at the cost of rarity. Pure bases are cheaper but more predictable.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- CURRENCY INDEX -->
+<section class="sec" id="currency">
+  <div class="eyebrow">Crafting</div>
+  <h2 class="sec-title">Currency Index</h2>
+  <p class="sec-sub">Every crafting currency in 0.5.0 — what it does, when to use it, and what to hoard.</p>
+
+  <div class="callout danger">
+    <div class="c-icon">🚫</div>
+    <div><div class="c-label">Removed in 0.5.0 — Recombinator Disabled</div>
+    <div class="c-body"><strong>Recombinator is disabled</strong> for the entire Runes of Aldur league. Any Omens of Recombination were deleted on login. The ability to merge mods from two items is gone. All crafts must be planned without it.</div></div>
+  </div>
+
+  <div style="margin-bottom:16px">
+    <div class="eyebrow" style="margin-bottom:10px;font-size:.6rem">Normal-Rarity Conversion</div>
+    <div class="currency-grid">
+      <div class="cur-card magic">
+        <div class="cur-header"><div class="cur-icon c-blue">🔵</div><div><div class="cur-name">Orb of Transmutation</div><div class="cur-tier">White → Magic</div></div></div>
+        <div class="cur-desc">Upgrades a Normal item to Magic (1 random prefix or suffix). Starting point for most crafts — needed before Augmentation or Regal can be applied.</div>
+        <div class="cur-tags"><span class="tag det">Deterministic start</span><span class="tag save">Hoard early</span></div>
+      </div>
+      <div class="cur-card magic">
+        <div class="cur-header"><div class="cur-icon c-blue">➕</div><div><div class="cur-name">Orb of Augmentation</div><div class="cur-tier">Add mod to Magic item</div></div></div>
+        <div class="cur-desc">Adds a second modifier to a Magic item that only has one. Use after Transmutation when you want to fill the second mod slot before Regaling.</div>
+        <div class="cur-tags"><span class="tag det">Targeted use</span><span class="tag save">Hoard early</span></div>
+      </div>
+      <div class="cur-card magic">
+        <div class="cur-header"><div class="cur-icon c-blue">↗️</div><div><div class="cur-name">Regal Orb</div><div class="cur-tier">Magic → Rare</div></div></div>
+        <div class="cur-desc">Upgrades a Magic item to Rare, adding one random modifier. You keep both existing mods — the main way to convert a 2-mod Magic item into a crafting base while preserving your good mods.</div>
+        <div class="cur-tags"><span class="tag det">Targeted upgrade</span></div>
+      </div>
+      <div class="cur-card magic">
+        <div class="cur-header"><div class="cur-icon c-blue">🔄</div><div><div class="cur-name">Orb of Alteration</div><div class="cur-tier">Reroll Magic item</div></div></div>
+        <div class="cur-desc">Rerolls all modifiers on a Magic item. Used when both mods are garbage. Alt-spam for a specific mod then Regal is a viable early-league strategy.</div>
+        <div class="cur-tags"><span class="tag spend">Spam tool</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-bottom:16px">
+    <div class="eyebrow" style="margin-bottom:10px;font-size:.6rem">Rare-Rarity Crafting</div>
+    <div class="currency-grid">
+      <div class="cur-card rare">
+        <div class="cur-header"><div class="cur-icon c-gold">🟡</div><div><div class="cur-name">Exalted Orb</div><div class="cur-tier">Add mod to Rare item</div></div></div>
+        <div class="cur-desc">Adds one random modifier to a Rare item with fewer than 6 mods. One of the most important crafting tools — use to fill out a Rare item after locking a key mod. Also the primary trade currency for mid-tier items.</div>
+        <div class="cur-tags"><span class="tag rare-tag">High value</span><span class="tag det">Targeted fill</span></div>
+      </div>
+      <div class="cur-card rare">
+        <div class="cur-header"><div class="cur-icon c-gold">🎲</div><div><div class="cur-name">Chaos Orb</div><div class="cur-tier">Reroll Rare item</div></div></div>
+        <div class="cur-desc">Rerolls all modifiers on a Rare item. Main "reset" button. In 0.5, Chaos spam is less efficient — use Essences for your guaranteed mod instead of raw Chaos.</div>
+        <div class="cur-tags"><span class="tag spend">Reroll tool</span></div>
+      </div>
+      <div class="cur-card rare">
+        <div class="cur-header"><div class="cur-icon c-gold">⬇️</div><div><div class="cur-name">Orb of Annulment</div><div class="cur-tier">Remove one mod from Rare</div></div></div>
+        <div class="cur-desc">Removes one random modifier from all prefixes and suffixes equally. Very dangerous — use Omen of Whittling (Suffix) or Amelioration (Prefix) instead for surgical removal.</div>
+        <div class="cur-tags"><span class="tag spend">High risk</span></div>
+      </div>
+      <div class="cur-card divine">
+        <div class="cur-header"><div class="cur-icon c-amber">✨</div><div><div class="cur-name">Divine Orb</div><div class="cur-tier">Reroll modifier values</div></div></div>
+        <div class="cur-desc">Rerolls numeric values within their allowed ranges. <strong style="color:var(--gold)">More common and more necessary in 0.5</strong> — Sanctifying now multiplies from current values, so you must Divine to max before Sanctifying or Corrupting.</div>
+        <div class="cur-tags"><span class="tag rare-tag">More common in 0.5</span><span class="tag spend">Finisher — use before Corrupt</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-bottom:16px">
+    <div class="eyebrow" style="margin-bottom:10px;font-size:.6rem">Precision Tools</div>
+    <div class="currency-grid">
+      <div class="cur-card special">
+        <div class="cur-header"><div class="cur-icon c-purple">🔒</div><div><div class="cur-name">Fracturing Orb</div><div class="cur-tier">Permanently lock one mod</div></div></div>
+        <div class="cur-desc">Permanently locks one random modifier — it can never be removed by any further crafting. Requires 4+ mods on the item. Once fractured, safely Chaos/slam remaining mods without risk of losing the locked one. ~9.5 Ex trade value.</div>
+        <div class="cur-tags"><span class="tag det">Deterministic lock</span><span class="tag rare-tag">High value</span></div>
+      </div>
+      <div class="cur-card special">
+        <div class="cur-header"><div class="cur-icon c-purple">🪄</div><div><div class="cur-name">Orb of Dominance</div><div class="cur-tier">Upgrades lowest mod tier</div></div></div>
+        <div class="cur-desc">Upgrades the lowest tier modifier on a Rare item to a higher tier of the same modifier. The modifier group is preserved. Use as a finisher when the item is mostly complete but has one weak mod dragging it down.</div>
+        <div class="cur-tags"><span class="tag det">Targeted upgrade</span></div>
+      </div>
+      <div class="cur-card special">
+        <div class="cur-header"><div class="cur-icon c-green">🔨</div><div><div class="cur-name">Artificer's Orb</div><div class="cur-tier">Add socket to item</div></div></div>
+        <div class="cur-desc">Adds one socket to an item. 10 Artificer's Shards (from salvaging socketed items) = 1 Orb. <strong style="color:var(--gold)">Sockets cannot be added after Corruption.</strong> Priority use: weapon first, then body armour.</div>
+        <div class="cur-tags"><span class="tag det">Targeted</span><span class="tag save">Salvage everything</span></div>
+      </div>
+      <div class="cur-card special">
+        <div class="cur-header"><div class="cur-icon c-purple">🪞</div><div><div class="cur-name">Mirror of Kalandra</div><div class="cur-tier">Duplicate any non-unique item</div></div></div>
+        <div class="cur-desc">Creates a mirrored copy of any non-Unique, non-Corrupted item. ~565 Divine in value. You'll see three in your entire time playing. Trade immediately unless you have a mirror-worthy item ready.</div>
+        <div class="cur-tags"><span class="tag rare-tag">Rarest currency</span><span class="tag save">Trade immediately</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="eyebrow" style="margin-bottom:10px;font-size:.6rem">Currency Hierarchy — Trade Value Reference</div>
+  <table class="btable">
+    <thead><tr><th>Currency</th><th>Approx. Value</th><th>Primary Use</th></tr></thead>
+    <tbody>
+      <tr><td class="bname">Mirror of Kalandra</td><td class="bval">~565 Divine</td><td class="bnote">Duplicate perfect items — trade unless a target item is ready</td></tr>
+      <tr><td class="bname">Divine Orb</td><td class="bval">1 Divine ≈ 150 Ex</td><td class="bnote">Reroll modifier values — always Divine before Sanctifying or Corrupting</td></tr>
+      <tr><td class="bname">Fracturing Orb</td><td class="bval">~9.5 Ex</td><td class="bnote">Lock T1 mod before slamming the rest of the item</td></tr>
+      <tr><td class="bname">Exalted Orb</td><td class="bval">1 Ex = baseline</td><td class="bnote">Primary rare-item crafting currency and mid-tier trade unit</td></tr>
+      <tr><td class="bname">Orb of Dominance</td><td class="bval">~2 Ex</td><td class="bnote">Upgrade lowest-tier mod on near-complete item</td></tr>
+      <tr><td class="bname">Orb of Annulment</td><td class="bval">~1.5 Ex</td><td class="bnote">Remove one mod — high risk, prefer Omens for surgical removal</td></tr>
+      <tr><td class="bname">Regal Orb</td><td class="bval">~0.4 Ex</td><td class="bnote">Promote Magic to Rare preserving both mods</td></tr>
+      <tr><td class="bname">Chaos Orb</td><td class="bval">~0.2 Ex</td><td class="bnote">Rare item reroll — use when Essences are unavailable</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- RUNES -->
+<section class="sec" id="runes">
+  <div class="eyebrow">Crafting</div>
+  <h2 class="sec-title">Runes & Socketables</h2>
+  <p class="sec-sub">The most reliable early crafting system — deterministic, predictable, and strong from Act 1 onward. All standard runes were buffed in 0.5.</p>
+
+  <div class="callout info">
+    <div class="c-icon">ℹ️</div>
+    <div><div class="c-label">How Runes Work</div>
+    <div class="c-body">Runes grant different bonuses depending on the item type. A Body Rune in body armour grants Life; the same Body Rune in a martial weapon grants Life Leech. <strong>Once inserted, a Rune cannot be removed — it's permanent.</strong> Add sockets with Artificer's Orbs (10 Shards from salvaging = 1 Orb). Sockets cannot be added after Corruption.</div></div>
+  </div>
+
+  <div class="callout tip">
+    <div class="c-icon">⚡</div>
+    <div><div class="c-label">Socket Priority Order</div>
+    <div class="c-body">1. <strong>Weapon first</strong> — Desert/Glacial/Storm Rune in weapon = highest DPS gain per Orb spent during the campaign.<br>
+    2. <strong>Body Armour second</strong> — Body Rune = +60 Max Life at max tier, one of the best defensive stats this early.<br>
+    3. <strong>Gloves</strong> — Vision Rune if accuracy-starved. Ring sockets for resistance Runes are low priority vs. finding better gear.</div></div>
+  </div>
+
+  <div class="rune-grid">
+    <div class="rune-card"><div class="rune-name"><div class="dot" style="background:var(--red)"></div>Body Rune</div><div class="rune-stat">Armour: +30/45/60 Max Life (buffed from +20/30/40)</div><div class="rune-detail">Martial Weapons: Leech 3/4/5% Physical Damage as Life. Best all-rounder Armour rune — socket this first if nothing more specific is needed.</div></div>
+    <div class="rune-card"><div class="rune-name"><div class="dot" style="background:var(--blue)"></div>Mind Rune</div><div class="rune-stat">Armour: +20/30/40 Max Mana (buffed from +15/25/35)</div><div class="rune-detail">Staves/Wands: +45/60/75 Max Mana (buffed from +30/40/50). Core rune for mana-hungry spell builds.</div></div>
+    <div class="rune-card"><div class="rune-name"><div class="dot" style="background:var(--green)"></div>Rebirth Rune</div><div class="rune-stat">Armour: Regen 0.35/0.4/0.45% Max Life/sec (buffed)</div><div class="rune-detail">Martial Weapons: Gain 15/25/35 Life per enemy killed. Pairs well with high-density maps. The leech sustain rune for melee builds.</div></div>
+    <div class="rune-card"><div class="rune-name"><div class="dot" style="background:var(--amber)"></div>Desert Rune</div><div class="rune-stat">Martial Weapons: Added Fire Damage</div><div class="rune-detail">One of the best early-campaign weapon runes. Fire damage adds directly to skills without any conversion needed.</div></div>
+    <div class="rune-card"><div class="rune-name"><div class="dot" style="background:#88ccff"></div>Glacial Rune</div><div class="rune-stat">Martial Weapons: Added Cold Damage</div><div class="rune-detail">Adds Chill buildup on hits, slowing enemies. Strong on fast-attacking weapons where chill is near-permanent.</div></div>
+    <div class="rune-card"><div class="rune-name"><div class="dot" style="background:#ffe066"></div>Storm Rune</div><div class="rune-stat">Martial Weapons: Added Lightning Damage</div><div class="rune-detail">Lightning has the highest average of the three elements. Best raw damage weapon rune on weapons with a wide damage range.</div></div>
+    <div class="rune-card"><div class="rune-name"><div class="dot" style="background:#c49de8"></div>Adept Rune</div><div class="rune-stat">Armour: +% Spell Damage</div><div class="rune-detail">Core rune for Intelligence builds — sceptres, wands, and staves benefit most.</div></div>
+    <div class="rune-card"><div class="rune-name"><div class="dot" style="background:#888"></div>Stone Rune</div><div class="rune-stat">Armour: +% Armour Rating</div><div class="rune-detail">Scales base Armour multiplicatively. Very strong on high-base Armour gear — pick this for Strength builds that don't need Life or Mana from the socket.</div></div>
+    <div class="rune-card"><div class="rune-name"><div class="dot" style="background:var(--teal)"></div>Vision Rune</div><div class="rune-stat">Armour: +Accuracy Rating</div><div class="rune-detail">Essential for attack builds that are accuracy-starved. One Glove socket can fix a 10%+ accuracy deficit without sacrificing passive points.</div></div>
+    <div class="rune-card"><div class="rune-name"><div class="dot" style="background:var(--gold)"></div>Robust Rune</div><div class="rune-stat">Armour: +% Energy Shield</div><div class="rune-detail">Primary rune for ES builds. Put in body armour or helm first — ES scales off base value, so high-base items amplify this rune significantly.</div></div>
+    <div class="rune-card"><div class="rune-name"><div class="dot" style="background:#c49de8"></div>Resolve Rune</div><div class="rune-stat">Armour: +Evasion Rating</div><div class="rune-detail">For Dexterity Evasion builds. Evasion has diminishing returns at high values — check your total Evasion Rating before using this over a resistance rune.</div></div>
+    <div class="rune-card"><div class="rune-name"><div class="dot" style="background:#ff9966"></div>Bonded Rune (0.5 Doubled)</div><div class="rune-stat">Standard: +20 Life and +20 Mana (was +10/+10)</div><div class="rune-detail">The hybrid life+mana rune — doubled in value in 0.5. Useful when you need both stats and can only spare one socket.</div></div>
+  </div>
+
+  <div class="sec-divider"></div>
+  <div class="eyebrow" style="margin-bottom:10px;font-size:.6rem">Socketable Types Compared</div>
+  <table class="btable">
+    <thead><tr><th>Type</th><th>Slot</th><th>Removable?</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td class="bname">Standard Runes</td><td class="bnote">Any socketed item</td><td class="bred">No — permanent</td><td class="bnote">Effect depends on item type. Drop as loot or craft from Remnants. Most commonly used socketable.</td></tr>
+      <tr><td class="bname">Soul Cores</td><td class="bnote">Any socketed item</td><td class="bred">No — permanent</td><td class="bnote">Monster-soul themed. Provide unique effects not available from standard Runes. From specific monster types.</td></tr>
+      <tr><td class="bname">Talismans</td><td class="bnote">Specific slot only</td><td class="bred">No — permanent</td><td class="bnote">Must be socketed into their designated gear slot to activate. Powerful offensive and defensive bonuses.</td></tr>
+      <tr><td class="bname">Azmeri Runes</td><td class="bnote">Any socketed item</td><td class="bred">No — permanent</td><td class="bnote">Higher-powered variants from Azmeri Wisps. Flexible for any class including spellcasters and summoners.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ESSENCES -->
+<section class="sec" id="essences">
+  <div class="eyebrow">Crafting</div>
+  <h2 class="sec-title">Essences & Omens</h2>
+  <p class="sec-sub">The most deterministic crafting tools available. Essences guarantee a specific modifier — never skip them.</p>
+
+  <div class="callout new">
+    <div class="c-icon">🆕</div>
+    <div><div class="c-label">0.5 Essence Changes</div>
+    <div class="c-body"><strong>Campaign essence count significantly increased</strong> — more varied Essences drop across Acts. Map base spawn rates slightly reduced but Atlas Passive Tree nodes compensate. Practical result: <strong>Essences are plentiful in the campaign, tight in early maps, abundant in late Atlas.</strong></div></div>
+  </div>
+
+  <div class="callout warn">
+    <div class="c-icon">⚠️</div>
+    <div><div class="c-label">One Crafted Modifier Rule — Affects Essences</div>
+    <div class="c-body">Essences, Perfect Essences, and Imbued Alloys all share the single "crafted modifier" slot. <strong>You cannot layer multiple Essence crafts on one item.</strong> Use the Essence for your most important guaranteed mod, then slam the rest with Exalted or Chaos Orbs.</div></div>
+  </div>
+
+  <table class="btable" style="margin-bottom:16px">
+    <thead><tr><th>Tier</th><th>How to Get</th><th>Mod Level</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td class="bname bblue">Normal Essence</td><td class="bnote">Campaign drops, monster drops</td><td class="bval">Variable</td><td class="bnote">Guarantees a specific modifier at lower tier values. Good for campaign and budget crafts.</td></tr>
+      <tr><td class="bname bblue">Greater Essence</td><td class="bnote">Campaign (rare), map drops</td><td class="bval">≥35</td><td class="bnote">Same guaranteed mod at higher minimum tier. Preferred for Act 3+ crafts.</td></tr>
+      <tr><td class="bname bblue">Perfect Essence</td><td class="bnote">Map drops, Atlas nodes</td><td class="bval">≥70</td><td class="bnote">Near-endgame quality. Spend only on ilvl 80+ bases.</td></tr>
+      <tr><td class="bname bpurple">Corrupted Essence</td><td class="bnote">Vaal Orb on Normal Essence</td><td class="bval">Variable</td><td class="bnote">Unique modifiers unavailable elsewhere. High risk to obtain — worth attempting on surplus Normal Essences.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout danger">
+    <div class="c-icon">🚫</div>
+    <div><div class="c-label">Omen of Corruption — Removed in 0.5</div>
+    <div class="c-body">Cannot be obtained in Runes of Aldur league. Controlled corruption is gone — Vaal Orb gambling only. Omen of Recombination was also removed entirely and deleted from inventories on login.</div></div>
+  </div>
+
+  <div class="eyebrow" style="margin-bottom:10px;font-size:.6rem;margin-top:16px">Remaining Omens Reference</div>
+  <table class="btable">
+    <thead><tr><th>Omen</th><th>Effect</th><th>When to Use</th></tr></thead>
+    <tbody>
+      <tr><td class="bname">Omen of Whittling</td><td class="bnote">Removes a random Suffix</td><td class="bnote">Good Prefixes, bad Suffix. Safer than Annulment — only targets Suffixes.</td></tr>
+      <tr><td class="bname">Omen of Amelioration</td><td class="bnote">Removes a random Prefix</td><td class="bnote">Suffixes are locked and you want to replace a bad Prefix.</td></tr>
+      <tr><td class="bname">Omen of Sinistral Catalyst</td><td class="bnote">Adds quality to weapon implicit</td><td class="bnote">Niche — useful on weapons with high-value implicits that scale with quality.</td></tr>
+      <tr><td class="bname">Omen of Dextral Catalyst</td><td class="bnote">Adds quality to armour implicit</td><td class="bnote">Use on body armours or helmets with strong implicits.</td></tr>
+      <tr><td class="bname bred">Omen of Recombination</td><td class="bred">REMOVED — Disabled for Runes of Aldur</td><td class="bred">Deleted from inventories on login. Gone.</td></tr>
+      <tr><td class="bname bred">Omen of Corruption</td><td class="bred">REMOVED — Cannot be obtained</td><td class="bred">Raw Vaal Orb only. No controlled corruption this league.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- FRACTURING -->
+<section class="sec" id="fracturing">
+  <div class="eyebrow">Crafting</div>
+  <h2 class="sec-title">Fracturing Orbs</h2>
+  <p class="sec-sub">Lock your best modifier permanently, then craft freely around it without fear of losing it. ~9.5 Exalted Orbs trade value.</p>
+
+  <div class="callout tip">
+    <div class="c-icon">🔒</div>
+    <div><div class="c-label">The Core Concept</div>
+    <div class="c-body">A Fractured modifier is permanently locked — no currency can remove it. This lets you freely re-roll or slam the remaining mods. The tradeoff: Fracture selects randomly from all eligible mods, so you need 4+ mods and you'll fracture whichever one is randomly chosen — not necessarily your best one. Pre-load the item with your target mod via Essence first, then Fracture.</div></div>
+  </div>
+
+  <div class="workflow">
+    <div class="wf-step"><div class="wf-num">1</div><div class="wf-content"><div class="wf-title">Build to 4+ Modifiers <span class="wlabel">Requirement</span></div><div class="wf-body">Fracturing Orbs require at least 4 mods. Use Essences for your primary target mod first, then fill out the rest. If rolling for the mod naturally, don't Fracture until you have 4 mods you'd be happy with if any of them got locked.</div></div></div>
+    <div class="wf-step"><div class="wf-num">2</div><div class="wf-content"><div class="wf-title">Identify Your Target Mod <span class="wlabel">Critical step</span></div><div class="wf-body">Know exactly which mod you'd most want locked. Best fracture targets: <em>T1 Maximum Life</em>, <em>T1 resistance</em>, high weapon damage prefix. Don't Fracture unless you're happy with any of the 4+ mods getting locked.</div></div></div>
+    <div class="wf-step"><div class="wf-num alt">3</div><div class="wf-content"><div class="wf-title">Apply Fracturing Orb <span class="wlabel">~9.5 Ex cost</span></div><div class="wf-body">One mod is randomly selected and permanently locked (shown with a metallic border). If it's not your primary target, evaluate if the result is still worth continuing — a fractured T1 resistance is still a strong base to build around.</div></div></div>
+    <div class="wf-step"><div class="wf-num">4</div><div class="wf-content"><div class="wf-title">Craft Freely Around the Lock</div><div class="wf-body">Use Chaos Orbs, Exalted slams, or Essences without risk of losing the fractured mod. Annulment still targets randomly but cannot remove the fractured mod — it can remove others. Use Omen of Whittling/Amelioration for surgical mod removal instead of Annulment.</div></div></div>
+    <div class="wf-step"><div class="wf-num danger">5</div><div class="wf-content"><div class="wf-title">Dominance → Divine → Sanctify/Corrupt <span class="wlabel">Irreversible</span></div><div class="wf-body">Orb of Dominance to upgrade the weakest mod. Then <em>Divine Orb to max all values before Sanctifying or Corrupting</em> — in 0.5 both operations multiply from current values. Corruption is the final irreversible step.</div></div></div>
+  </div>
+</section>
+
+<!-- CORRUPTION -->
+<section class="sec" id="corruption">
+  <div class="eyebrow">Crafting</div>
+  <h2 class="sec-title">Corruption & Vaal Orbs</h2>
+  <p class="sec-sub">The final, irreversible step. Corrupted items cannot be modified by any further crafting currency.</p>
+
+  <div class="callout danger">
+    <div class="c-icon">☠️</div>
+    <div><div class="c-label">Corruption Is Irreversible — Always Divine First</div>
+    <div class="c-body">Once an item is Corrupted, no currency can modify it further — including adding sockets. <strong>Max quality → add sockets → Divine to max values → Corrupt.</strong> In 0.5 both Corruption and Sanctification multiply existing values, making pre-Corruption Divining mandatory.</div></div>
+  </div>
+
+  <table class="btable" style="margin-bottom:16px">
+    <thead><tr><th>Outcome</th><th>Effect</th><th>Rate</th></tr></thead>
+    <tbody>
+      <tr><td class="bname bgreen">Nothing happens</td><td class="bnote">Item becomes Corrupted but no changes</td><td class="bval">~25%</td></tr>
+      <tr><td class="bname bblue">Add enchantment</td><td class="bnote">Adds a random enchantment — not prefix/suffix, doesn't count toward 6-mod limit</td><td class="bval">~25%</td></tr>
+      <tr><td class="bname bval">Reroll implicits</td><td class="bnote">Rerolls the item's implicit modifier(s) to a random value within the Corrupted implicit pool</td><td class="bval">~25%</td></tr>
+      <tr><td class="bname bpurple">Multiply numeric values</td><td class="bnote"><strong>0.5 Change:</strong> Multiplies each modifier value based on its current value (up or down) instead of rerolling to random. Divine to max first.</td><td class="bval">~25%</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout new">
+    <div class="c-icon">🆕</div>
+    <div><div class="c-label">0.5 — Multiply, Not Reroll (Corruption & Sanctification)</div>
+    <div class="c-body">Both Corruption and Sanctification now <strong>multiply each modifier value from its current value</strong> rather than rerolling to a random value in an extended range. High current values → higher expected outcomes. Low current values → risk of going even lower. <strong>Always Divine Orb to maximum before Corrupting or Sanctifying.</strong></div></div>
+  </div>
+</section>
+
+<!-- VERISIUM -->
+<section class="sec" id="verisium">
+  <div class="eyebrow">New in 0.5</div>
+  <h2 class="sec-title">Verisium Runeforging</h2>
+  <p class="sec-sub">Brand new to Runes of Aldur League — adds Runic Ward to armour and unlocks a massive expansion of the rune system via Remnant encounters.</p>
+
+  <div class="callout new">
+    <div class="c-icon">🆕</div>
+    <div><div class="c-label">Unlock Progression via Farrow's Quests</div>
+    <div class="c-body"><strong>Act 1:</strong> Basic Verisium Runeforging — adds Runic Ward to armour below level 55 at no cost.<br>
+    <strong>Act 2:</strong> Alloy currencies (13 new crafting items from Remnants).<br>
+    <strong>Act 3:</strong> Unique Verisium Runeforging — upgrade base type of Unique Weapons and Armour below level 55.<br>
+    <strong>Act 4:</strong> All 13 Ancient Runes unlock.</div></div>
+  </div>
+
+  <div class="currency-grid">
+    <div class="cur-card cnew" style="grid-column:1/-1">
+      <div class="cur-header"><div class="cur-icon c-teal">🛡️</div><div><div class="cur-name">Runic Ward</div><div class="cur-tier">New defence type in 0.5</div></div></div>
+      <div class="cur-desc">Runic Ward is a defensive layer that activates when you reach 1 Life — it regenerates independently of your Life pool, giving you a second chance during burst damage. Think of it as a separate buffer that kicks in at the last moment.<br><br>
+      <strong style="color:var(--text)">Items below level 55:</strong> Runic Ward added with no downside — free power.<br>
+      <strong style="color:var(--text)">Items above level 55:</strong> A portion of base defences is traded for Runic Ward.<br><br>
+      <strong style="color:var(--gold)">Recommendation:</strong> Add Runic Ward to your primary armour during the campaign for free. In endgame, only trade base defences if you already have enough from other sources.</div>
+      <div class="cur-tags"><span class="tag new-tag">0.5 Exclusive</span><span class="tag save">Free on sub-55 items</span></div>
+    </div>
+  </div>
+
+  <div class="eyebrow" style="margin-bottom:10px;font-size:.6rem;margin-top:20px">New Rune Types from Remnants</div>
+  <table class="btable">
+    <thead><tr><th>Rune Type</th><th>Count</th><th>Unlock</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td class="bname bteal">Mythical Runes</td><td class="bval">13</td><td class="bnote">Early Remnant encounters</td><td class="bnote">Significant stat boosts for level 15+ characters. Strong early-league power spike.</td></tr>
+      <tr><td class="bname bteal">Ancient Runes</td><td class="bval">13</td><td class="bnote">Farrow's Act 4 quest</td><td class="bnote">Weapon-type-specific bonuses — among the strongest weapon modifiers available. Major endgame milestone.</td></tr>
+      <tr><td class="bname bteal">Meta Crafting Runes</td><td class="bval">15</td><td class="bnote">Advanced Remnants</td><td class="bnote">PoE2's equivalent of PoE1 meta-crafting. Control prefix/suffix locks, mod count guarantees. Essential for high-end crafts.</td></tr>
+      <tr><td class="bname bteal">Flux Runes</td><td class="bval">3</td><td class="bnote">Mid-tier Remnants</td><td class="bnote">Transform one elemental resistance to another element. Extremely useful for capping resistances when you have excess of one type.</td></tr>
+      <tr><td class="bname bteal">Alloy Currencies</td><td class="bval">13</td><td class="bnote">Farrow's Act 2 quest</td><td class="bnote">Add crafted modifiers by replacing existing ones. Share the one crafted-mod slot with Essences — plan which system provides your guaranteed mod.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- GENESIS TREE -->
+<section class="sec" id="genesis">
+  <div class="eyebrow">New in 0.5</div>
+  <h2 class="sec-title">Genesis Tree (Breach)</h2>
+  <p class="sec-sub">A dedicated crafting bench inside Breach. Produces exclusive rings, amulets, and belts. The only source of Catalysts in 0.5.</p>
+
+  <div class="callout new">
+    <div class="c-icon">🌿</div>
+    <div><div class="c-label">Breach Overhaul — Now Fixed Locations on Atlas</div>
+    <div class="c-body">Breach has been completely rebuilt in 0.5. It now appears in <strong>fixed locations on the Atlas</strong> — trackable instead of luck-dependent. Kill Breach monsters to earn <strong>Wombgifts</strong> and <strong>Hiveblood</strong> that power the Genesis Tree. <strong>Catalysts no longer drop from monsters</strong> — the Genesis Tree is the only source for all 24 Catalyst types.</div></div>
+  </div>
+
+  <div class="currency-grid">
+    <div class="cur-card cnew">
+      <div class="cur-header"><div class="cur-icon c-teal">💍</div><div><div class="cur-name">Rings (6 new bases)</div><div class="cur-tier">Exclusive to Genesis Tree</div></div></div>
+      <div class="cur-desc">New Caster and Minion modifier pools available exclusively on Genesis Tree rings — not accessible through any other crafting method.</div>
+      <div class="cur-tags"><span class="tag new-tag">Exclusive bases</span></div>
+    </div>
+    <div class="cur-card cnew">
+      <div class="cur-header"><div class="cur-icon c-teal">📿</div><div><div class="cur-name">Amulets (4 new bases)</div><div class="cur-tier">Exclusive to Genesis Tree</div></div></div>
+      <div class="cur-desc">4 exclusive Amulet bases. High-value targets for Caster and Summoner builds since these modifier pools don't exist on trade items.</div>
+      <div class="cur-tags"><span class="tag new-tag">Exclusive bases</span></div>
+    </div>
+    <div class="cur-card cnew">
+      <div class="cur-header"><div class="cur-icon c-teal">🔰</div><div><div class="cur-name">Belts (4 new bases)</div><div class="cur-tier">Exclusive to Genesis Tree</div></div></div>
+      <div class="cur-desc">4 exclusive Belt bases with Caster and Minion mod pool access. Top priority for Summoner builds seeking combos that don't exist elsewhere.</div>
+      <div class="cur-tags"><span class="tag new-tag">Exclusive bases</span></div>
+    </div>
+    <div class="cur-card cnew">
+      <div class="cur-header"><div class="cur-icon c-teal">⚗️</div><div><div class="cur-name">All 24 Catalysts</div><div class="cur-tier">Only source in 0.5</div></div></div>
+      <div class="cur-desc">12 original + 12 new Jewel Catalysts — all obtained exclusively here. <strong style="color:var(--gold)">Engaging Breach is now mandatory</strong> to apply quality to rings, amulets, belts, and jewels.</div>
+      <div class="cur-tags"><span class="tag new-tag">Sole Catalyst source</span><span class="tag spend">Must engage Breach</span></div>
+    </div>
+  </div>
+
+  <div class="callout tip" style="margin-top:4px">
+    <div class="c-icon">💡</div>
+    <div><div class="c-label">Genesis Tree Priority Order</div>
+    <div class="c-body"><strong>1.</strong> Catalysts for your rings and amulets — unlock jewelry quality first.<br>
+    <strong>2.</strong> Genesis Tree Ring/Amulet if you're a Caster or Summoner — exclusive mod pools are the strongest non-trade upgrade for these archetypes.<br>
+    <strong>3.</strong> Breachstone Splinters → Breachstone for a dedicated Breach map run.<br>
+    <strong>4.</strong> Steady Catalyst income — a rare item with top-tier Genesis mods can fetch dozens of Divine Orbs on trade.</div></div>
+  </div>
+
+  <div class="callout info">
+    <div class="c-icon">♻️</div>
+    <div><div class="c-label">Alternate Quality Salvage</div>
+    <div class="c-body">Alternate Quality items crafted using Breach Catalysts can now be <strong>salvaged to return a portion of the Catalysts used</strong>. If you have Alternate Quality items gathering dust, salvage them — especially valuable now that Catalysts are Breach-exclusive.</div></div>
+  </div>
+</section>
+
+<!-- ALDUR'S LEGACY -->
+<section class="sec" id="aldurs-legacy">
+  <div class="eyebrow">New in 0.5</div>
+  <h2 class="sec-title">Aldur's Legacy Rune</h2>
+  <p class="sec-sub">Destroys a Unique item and transfers its core ability as a permanent rune. One use per character. Your most important crafting decision in 0.5.</p>
+
+  <div class="callout danger">
+    <div class="c-icon">☠️</div>
+    <div><div class="c-label">Permanent and Irreversible — One Per Character</div>
+    <div class="c-body">Aldur's Legacy <strong>destroys the Unique item</strong> you feed it. Each character can only socket <strong>one Aldur's Legacy Rune across all equipment</strong>. Only activates on Ezomyte or Kalguuran Unique items. Do not rush this — wait until you're deep in maps and fully confident in your build direction.</div></div>
+  </div>
+
+  <div class="workflow">
+    <div class="wf-step"><div class="wf-num">1</div><div class="wf-content"><div class="wf-title">Identify your build's biggest bottleneck</div><div class="wf-body">What is your build missing that a Unique item currently provides? Aldur's Legacy lets you transfer that effect to any gear slot. A needed movement skill, aura, or damage modifier from a Unique can move onto your best-in-slot Rare gear.</div></div></div>
+    <div class="wf-step"><div class="wf-num">2</div><div class="wf-content"><div class="wf-title">Confirm Ezomyte or Kalguuran type</div><div class="wf-body">Only these two Unique subtypes are compatible. Check the item's origin before planning around it.</div></div></div>
+    <div class="wf-step"><div class="wf-num alt">3</div><div class="wf-content"><div class="wf-title">Wait until endgame — do not rush</div><div class="wf-body">Early in the league, Unique values and meta priorities shift rapidly. Use the Unique item normally until you're deep in maps and certain of your build direction. Destroying a Unique prematurely for a sub-optimal transfer is the most expensive mistake you can make in 0.5.</div></div></div>
+    <div class="wf-step"><div class="wf-num">4</div><div class="wf-content"><div class="wf-title">Socket into your highest-value item</div><div class="wf-body">Since you only get one, socket it into your absolute best piece — the item you'll use longest. Body armour, weapon, and helmet are the most impactful slots given their higher socket counts and modifier ceilings.</div></div></div>
+  </div>
+</section>
+
+<!-- CRAFTING WORKFLOW -->
+<section class="sec" id="workflow">
+  <div class="eyebrow">Craft Strategy</div>
+  <h2 class="sec-title">Crafting Workflows</h2>
+  <p class="sec-sub">Stage-by-stage crafting sequences for 0.5. Use as a decision tree, not a rigid script.</p>
+
+  <div class="eyebrow" style="margin-bottom:12px;font-size:.6rem">Standard Rare Item Workflow</div>
+  <div class="workflow">
+    <div class="wf-step"><div class="wf-num">1</div><div class="wf-content"><div class="wf-title">Select the right base <span class="wlabel">Foundation</span></div><div class="wf-body">ilvl 80+ for endgame T1 mods. Match base attribute type to your build's defensive layer. Buy the cheapest Normal base at the right ilvl.</div></div></div>
+    <div class="wf-step"><div class="wf-num">2</div><div class="wf-content"><div class="wf-title">Max quality first <span class="wlabel">Before any crafting</span></div><div class="wf-body">Armourer's Scrap (armour) or Blacksmith's Whetstone (weapons) to 20% quality. <em>Quality cannot be added after Corruption.</em> Most skipped step.</div></div></div>
+    <div class="wf-step"><div class="wf-num">3</div><div class="wf-content"><div class="wf-title">Essence for your guaranteed mod <span class="wlabel">One crafted mod rule</span></div><div class="wf-body">Pick the one modifier your build cares about most — Life, resistance, spell damage — and apply the matching Essence. In 0.5 this is your <em>only</em> guaranteed mod slot.</div></div></div>
+    <div class="wf-step"><div class="wf-num">4</div><div class="wf-content"><div class="wf-title">Evaluate remaining mods <span class="wlabel">Decision point</span></div><div class="wf-body">If 2+ remaining mods are useful, continue. If all remaining mods are garbage, Chaos Orb to reroll and repeat from Step 3.</div></div></div>
+    <div class="wf-step"><div class="wf-num">5</div><div class="wf-content"><div class="wf-title">Fracture if a second T1 mod appears <span class="wlabel">Optional — high value</span></div><div class="wf-body">If random rolls produced a second high-value mod (T1 Life + T1 resistance on a 4-mod item), apply a Fracturing Orb to lock it. ~9.5 Ex but gives you a permanent double-T1 base.</div></div></div>
+    <div class="wf-step"><div class="wf-num">6</div><div class="wf-content"><div class="wf-title">Fill remaining slots with Exalted slams</div><div class="wf-body">Exalted Orbs until 5–6 total mods. Check prefix/suffix balance first — a slam fails if the relevant side is full (3/3). Use Omen of Whittling/Amelioration to remove a bad mod on the correct side before slamming.</div></div></div>
+    <div class="wf-step"><div class="wf-num">7</div><div class="wf-content"><div class="wf-title">Orb of Dominance on weakest mod <span class="wlabel">Polish</span></div><div class="wf-body">Upgrade the lowest-tier mod to a higher tier of the same modifier. Repeat until satisfied with all 6 mods.</div></div></div>
+    <div class="wf-step"><div class="wf-num danger">8</div><div class="wf-content"><div class="wf-title">Divine Orb → max all values <span class="wlabel">BEFORE Sanctify/Corrupt</span></div><div class="wf-body">Roll Divine Orbs until all modifier values are at or near maximum. Mandatory before Sanctifying or Corrupting in 0.5.</div></div></div>
+    <div class="wf-step"><div class="wf-num danger">9</div><div class="wf-content"><div class="wf-title">Sanctify or Corrupt — final step <span class="wlabel">Irreversible</span></div><div class="wf-body">Sanctification for the highest possible modifier ceiling. Vaal Orb for an enchantment or socket bonus. Both are irreversible — only do this when the item is fully complete.</div></div></div>
+  </div>
+
+  <div class="callout warn" style="margin-top:4px">
+    <div class="c-icon">⚔️</div>
+    <div><div class="c-label">0.5 Weapon Note — Skill Level Modifiers Reduced</div>
+    <div class="c-body"><strong>Attack weapons nerfed:</strong> +to Melee Skills reduced from +7 to +5 max on 2H, +5 to +4 on 1H. Quiver implicit: +2 to +1.<br>
+    <strong>Spell weapons unchanged:</strong> Staffs and Wands retain full values — the best targets for skill-level crafting.<br>
+    Reallocate attack-weapon crafting budget accordingly.</div></div>
+  </div>
+</section>
+
+<!-- CAMPAIGN CRAFTING PRIORITIES -->
+<section class="sec" id="campaign-crafting">
+  <div class="eyebrow">Craft Strategy</div>
+  <h2 class="sec-title">Campaign Crafting Priorities</h2>
+  <p class="sec-sub">What to craft at each stage of the campaign. The goal is just to stay alive and clear efficiently.</p>
+
+  <table class="btable">
+    <thead><tr><th>Stage</th><th>Priority Action</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td class="bname bteal">Acts 1–2</td><td class="bnote">Socket weapon with Desert/Glacial/Storm Rune ASAP</td><td class="bnote">Biggest DPS gain per Orb spent. Salvage every socketed item you don't equip to stack Artificer's Shards.</td></tr>
+      <tr><td class="bname bteal">Acts 1–2</td><td class="bnote">Transmute + Augment rings/gloves for resistances</td><td class="bnote">Resistance cap is critical by Act 2. Two resistance mods on rings is efficient and cheap.</td></tr>
+      <tr><td class="bname bteal">Act 2</td><td class="bnote">Unlock Verisium Runeforging via Farrow's quest</td><td class="bnote">Free Runic Ward on sub-55 body armour costs nothing and provides a meaningful safety net.</td></tr>
+      <tr><td class="bname bteal">Act 3</td><td class="bnote">Vendor check at Ziggurat — upgrade weapon if behind</td><td class="bnote">Act 3 monsters hit harder. A vendor weapon upgrade beats any crafting on old gear.</td></tr>
+      <tr><td class="bname bteal">Act 3</td><td class="bnote">Use Normal Essences on body armour for Life prefix</td><td class="bnote">Essence of the Body on body armour guarantees Life — a stable platform for the rest of the campaign.</td></tr>
+      <tr><td class="bname bteal">Act 4</td><td class="bnote">Alt-spam or Regal-craft jewelry for dual resistances</td><td class="bnote">Two rings + one amulet covering all three elements eliminates the most common death reason in Act 4 and Interludes.</td></tr>
+      <tr><td class="bname bval">Post-Interludes</td><td class="bnote">Begin engaging Breach for Genesis Tree access</td><td class="bnote">Catalysts are Breach-exclusive. You need Breach engagement to apply jewelry quality before map progression.</td></tr>
+      <tr><td class="bname bval">Early Maps</td><td class="bnote">Perfect Essence of the Body on ilvl 75+ body armour</td><td class="bnote">One Perfect Essence on a good base beats ten Chaos Orb slams. Campaign stockpile carries you here.</td></tr>
+      <tr><td class="bname bval">Mid Maps</td><td class="bnote">Fracture T1 mods on your best items</td><td class="bnote">Once you have a T1 mod, Fracture it before continuing to craft. The permanent lock turns a good item into a reliable crafting base.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- COMMON MISTAKES -->
+<section class="sec" id="mistakes">
+  <div class="eyebrow">Craft Strategy</div>
+  <h2 class="sec-title">Common Mistakes</h2>
+  <p class="sec-sub">The crafting errors that waste the most currency in 0.5.</p>
+
+  <div class="currency-grid">
+    <div class="cur-card" style="border-color:rgba(212,64,64,0.35)">
+      <div class="cur-header"><div class="cur-icon c-red">❌</div><div><div class="cur-name">Corrupting Before Divining</div><div class="cur-tier">Most expensive mistake</div></div></div>
+      <div class="cur-desc">In 0.5, Corruption multiplies current values. Corrupting a T1 item at 60% roll values locks those in forever. <strong>Always Divine to maximum before Corrupting or Sanctifying.</strong></div>
+      <div class="cur-tags"><span class="tag spend">Irreversible</span></div>
+    </div>
+    <div class="cur-card" style="border-color:rgba(212,64,64,0.35)">
+      <div class="cur-header"><div class="cur-icon c-red">❌</div><div><div class="cur-name">Forgetting Sockets Before Corruption</div><div class="cur-tier">Sockets cannot be added post-Corruption</div></div></div>
+      <div class="cur-desc">Artificer's Orbs cannot be used on Corrupted items. Plan your socket count before the final Vaal Orb. This is the second most common irreversible mistake.</div>
+      <div class="cur-tags"><span class="tag spend">Pre-plan sockets</span></div>
+    </div>
+    <div class="cur-card" style="border-color:rgba(212,64,64,0.35)">
+      <div class="cur-header"><div class="cur-icon c-red">❌</div><div><div class="cur-name">Stacking Essences (No Longer Possible)</div><div class="cur-tier">0.5 one-crafted-mod rule</div></div></div>
+      <div class="cur-desc">Items can only have one crafted modifier in 0.5. A second Essence application overwrites the first. Chain-Essence crafting is gone — plan your one guaranteed mod carefully.</div>
+      <div class="cur-tags"><span class="tag spend">0.5 change</span></div>
+    </div>
+    <div class="cur-card" style="border-color:rgba(212,64,64,0.35)">
+      <div class="cur-header"><div class="cur-icon c-red">❌</div><div><div class="cur-name">Using Aldur's Legacy Too Early</div><div class="cur-tier">One use per character — forever</div></div></div>
+      <div class="cur-desc">Destroying a Unique for Aldur's Legacy before your build's endgame direction is clear is the biggest permanent loss available. Wait until you're deep in maps.</div>
+      <div class="cur-tags"><span class="tag spend">Wait for endgame</span></div>
+    </div>
+    <div class="cur-card" style="border-color:rgba(212,64,64,0.35)">
+      <div class="cur-header"><div class="cur-icon c-red">❌</div><div><div class="cur-name">Chaos Orb Spamming</div><div class="cur-tier">Inefficient in 0.5</div></div></div>
+      <div class="cur-desc">Raw Chaos spam is far less efficient than Essence + Exalted slam. Essences give you a guaranteed mod. Use Essences for your one deterministic slot, Exalt for the rest.</div>
+      <div class="cur-tags"><span class="tag spend">Use Essences instead</span></div>
+    </div>
+    <div class="cur-card" style="border-color:rgba(212,64,64,0.35)">
+      <div class="cur-header"><div class="cur-icon c-red">❌</div><div><div class="cur-name">Skipping Breach</div><div class="cur-tier">No Catalysts otherwise</div></div></div>
+      <div class="cur-desc">Catalysts only come from the Genesis Tree. Skipping Breach means zero Catalyst access and no quality on your jewelry. Engage Breach early and consistently.</div>
+      <div class="cur-tags"><span class="tag spend">Breach is mandatory now</span></div>
+    </div>
+    <div class="cur-card" style="border-color:rgba(212,64,64,0.35)">
+      <div class="cur-header"><div class="cur-icon c-red">❌</div><div><div class="cur-name">Forgetting Quality</div><div class="cur-tier">Pre-crafting step</div></div></div>
+      <div class="cur-desc">Quality scales base defences multiplicatively with all other modifiers. Skipping 20% quality before crafting or Corruption is a permanent effective stat loss.</div>
+      <div class="cur-tags"><span class="tag spend">Step 2 always</span></div>
+    </div>
+    <div class="cur-card" style="border-color:rgba(212,64,64,0.35)">
+      <div class="cur-header"><div class="cur-icon c-red">❌</div><div><div class="cur-name">Using Annulment Blindly</div><div class="cur-tier">Hits random mods</div></div></div>
+      <div class="cur-desc">Annulment removes one random mod from all prefixes and suffixes equally. On a 5-mod item, 4/5 chance of losing a good mod. Use Omen of Whittling (Suffix) or Amelioration (Prefix) instead.</div>
+      <div class="cur-tags"><span class="tag spend">Use Omens instead</span></div>
+    </div>
+  </div>
+
+  <div class="callout tip" style="margin-top:4px">
+    <div class="c-icon">📌</div>
+    <div><div class="c-label">Pre-Craft Checklist</div>
+    <div class="c-body">
+      ✓ Right base type and ilvl for the mods I want?<br>
+      ✓ Quality maxed (20%) before starting?<br>
+      ✓ Checked PoE2DB for prefix/suffix split of my target mods?<br>
+      ✓ All sockets added before any potential Corruption?<br>
+      ✓ Using my one crafted-mod slot on the most important guaranteed mod?<br>
+      ✓ Divining to maximum values before Sanctifying or Corrupting?<br>
+      ✓ For Aldur's Legacy — waited until endgame, build direction confirmed?
+    </div></div>
+  </div>
+</section>
+
 </main>
 </div>
 <script>
